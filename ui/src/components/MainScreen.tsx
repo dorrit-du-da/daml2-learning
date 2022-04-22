@@ -6,7 +6,7 @@ import { Image, Menu } from 'semantic-ui-react'
 import MainView from './MainView';
 import { User } from '@daml.js/daml2-learning';
 import { PublicParty } from '../Credentials';
-import { userContext } from './App';
+import { userContext } from '../config';
 import clsx from 'clsx'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
@@ -15,7 +15,7 @@ import Drawer from '@material-ui/core/Drawer'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 
-import AppMenu from './appMenu/AppMenu'
+import AppMenu from './appmenu/AppMenu'
 import Wallet from '../pages/account/Account'
 import Home from '../pages/home/Home'
 
@@ -149,6 +149,7 @@ const drawerWidth = 240
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    background:"black"
   },
   drawerPaper: {
     position: 'relative',
@@ -156,7 +157,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    background: '#000000',
+    background: '#222628',
     color: '#fff',
   },
   content: {

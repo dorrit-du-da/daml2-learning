@@ -14,10 +14,10 @@ import ShareIcon from '@mui/icons-material/Share';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
-import { userContext } from '../App';
+import { userContext } from '../../config';
 import AppMenuItem from "./AppMenuItem";
 import AppMenuItemComponent from './AppMenuItemComponent'
-import logoSVG from  "../../header_logo.jpeg"
+import logoSVG from  "../../image/header_logo.jpeg"
 
 const appMenuItems = [
   {
@@ -77,7 +77,7 @@ const AppMenu: React.FC<Props> = ({ onLogout }) => {
 
   return (
     <>
-        <img className={classes.img}  src={logoSVG} alt="logo" />
+    <img className={classes.img}  src={logoSVG} alt="logo" />
     <List component="nav" className={classes.appMenu} disablePadding>
   
       <Typography align={'center'} gutterBottom={true} variant ='h6'>You are logged in as {user.userId}.</Typography>

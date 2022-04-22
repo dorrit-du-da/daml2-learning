@@ -4,7 +4,19 @@
 import { encode } from 'jwt-simple';
 import { isRunningOnHub } from '@daml/hub-react';
 import Ledger, { CanReadAs } from '@daml/ledger';
+import { createLedgerContext } from "@daml/react";
 
+// Context for the party of the user.
+export const userContext = createLedgerContext();
+// Context for the public party used to query user aliases.
+// On Daml hub, this is a separate context. Locally, we have a single
+// token that has actAs claims for the user’s party and readAs claims for
+// the public party so we reuse the user context.
+export const publicContext = isRunningOnHub()
+  ? createLedgerContext()
+  : userContext;
+
+  
 export type UserManagement = {
   tokenPayload: (loginName: string, ledgerId: string) => Object,
   primaryParty: (loginName: string, ledger: Ledger) => Promise<string>,

@@ -3,13 +3,13 @@
 
 import React, { useCallback, useState } from "react";
 import { Button, Form, Grid, Header, Image, Segment } from "semantic-ui-react";
-import Credentials, { PublicParty } from "../Credentials";
+import Credentials, { PublicParty } from "../../Credentials";
 import Ledger from "@daml/ledger";
 import {
   DamlHubLogin as DamlHubLoginBtn,
   usePublicParty,
 } from "@daml/hub-react";
-import { authConfig, Insecure } from "../config";
+import { authConfig, Insecure } from "../../config";
 
 type Props = {
   onLogin: (credentials: Credentials) => void;

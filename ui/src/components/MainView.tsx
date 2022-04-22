@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import { Container, Grid, Header, Icon, Segment, Divider } from 'semantic-ui-react';
 import { Party } from '@daml/types';
 import { User } from '@daml.js/daml2-learning';
-import { publicContext, userContext } from './App';
+import { publicContext, userContext } from '../config';
 import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
 

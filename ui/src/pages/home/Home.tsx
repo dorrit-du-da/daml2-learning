@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import Module from "../../components/module/Module";
+import logoSVG from "../../image/tech.png";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,8 +24,8 @@ const Home: React.FC = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid item />
       <Grid item>
-        <Typography gutterBottom variant="h1" className={classes.titlepad}>
-          Advertising - Campaigns
+        <Typography gutterBottom variant="h4" className={classes.titlepad}>
+          Home
         </Typography>
       </Grid>
       <Grid
@@ -34,7 +35,7 @@ const Home: React.FC = () => {
       >
         {Array.from(Array(6)).map((_, index) => (
           <Grid item xs={2} sm={4} md={4} key={index}>
-            <Module />
+            <Module link="account" title="test" description="test description" logo={logoSVG}/>
           </Grid>
         ))}
       </Grid>
@@ -59,7 +60,10 @@ const useStyles = makeStyles((theme) =>
       padding: 20,
     },
     titlepad: {
+      paddingLeft: 8,
       paddingBottom: 20,
+      color: "#fbcd14",
+      fontWeight: "bold"
     },
   })
 );

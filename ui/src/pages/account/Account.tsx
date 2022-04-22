@@ -5,23 +5,48 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
+import { AssetDeposit } from "@daml.js/daml2-learning";
+import { useStreamQueries } from "@daml/react";
+
+import { DataGrid } from "../../components/datagrid/Grid"
+import { userContext } from "../../config";
+import { ColDef } from "./config"
+
 const Account: React.FC = () => {
+  // const username = userContext.useParty();
   const classes = useStyles();
+
+  const allAssetDeposits = userContext.useStreamQueries( AssetDeposit.AssetDeposit).contracts;
+  const rowData: any[] =[]
+  allAssetDeposits.map(( i )=>( rowData.push(i.payload) ))
+
+
+  console.log("assetDepositContracts", allAssetDeposits);
 
   return (
     <Grid
       item
-      xs={10}
+      xs={12}
       container
       direction="column"
       className={classes.maincontent}
     >
       <Grid item />
       <Grid item>
-        <Typography gutterBottom variant="h1" className={classes.titlepad}>
-          Advertising - Campaigns
+        <Typography gutterBottom variant="h4"  className={classes.titlepad}>
+          Account
         </Typography>
       </Grid>
+      <DataGrid
+        gridData={ rowData || []}
+        colDef={ColDef}
+        size={{ width: "100%", height: 300 }}
+      />
+        <DataGrid
+        gridData={ rowData || []}
+        colDef={ColDef}
+        size={{ width: "100%", height: 300 }}
+      />
       {/* <Grid item justify="center">
         Hello
       </Grid> */}
@@ -46,7 +71,10 @@ const useStyles = makeStyles((theme) =>
       padding: 20,
     },
     titlepad: {
+      paddingLeft: 8,
       paddingBottom: 20,
+      color: "#fbcd14",
+      fontWeight: "bold"
     },
   })
 );

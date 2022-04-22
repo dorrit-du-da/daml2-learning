@@ -1,0 +1,13 @@
+module AssetDeposit where
+
+template AssetDeposit 
+  with
+    owner: Party
+    account: Text
+    provider: Text
+    asset: Text
+    quantity: Decimal
+  where
+    signatory owner
+
+
