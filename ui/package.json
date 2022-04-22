@@ -1,0 +1,57 @@
+{
+  "name": "daml2-learning",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@daml.js/daml2-learning": "file:daml.js/daml2-learning-0.1.0",
+    "@daml/hub-react": "^1.0.0",
+    "@daml/ledger": "2.0.0",
+    "@daml/react": "2.0.0",
+    "@daml/types": "2.0.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/icons-material": "^5.6.2",
+    "@mui/material": "^5.6.2",
+    "dotenv": "^8.2.0",
+    "jwt-simple": "^0.5.6",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^5.0.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --testURL='http://localhost:7575'",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src/"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/jwt-simple": "^0.5.33",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.3.3",
+    "http-proxy-middleware": "^1.0.4",
+    "react-scripts": "^4.0.3",
+    "typescript": "~3.8.3"
+  }
+}
