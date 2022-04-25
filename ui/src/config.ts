@@ -92,7 +92,7 @@ export const authConfig: Authentication = (() => {
     };
     return auth;
   } else {
-    const ledgerId: string = process.env.REACT_APP_LEDGER_ID ?? "daml2-learning-sandbox"
+    const ledgerId: string = process.env.REACT_APP_LEDGER_ID ?? "da-marketplace-sandbox"
     const auth: Insecure = {
       provider: "none",
       userManagement: userManagement,

@@ -5,8 +5,8 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import { AssetDeposit } from "@daml.js/daml2-learning";
-import { useStreamQueries } from "@daml/react";
+import { AssetDeposit } from '@daml.js/da-marketplace/lib/DA/Finance/Asset';
+import { Service } from '@daml.js/da-marketplace/lib/Marketplace/Custody/Service';
 
 import { DataGrid } from "../../components/datagrid/Grid"
 import { userContext } from "../../config";
@@ -16,17 +16,14 @@ const Account: React.FC = () => {
   // const username = userContext.useParty();
   const classes = useStyles();
 
-  const allAssetDeposits = userContext.useStreamQueries( AssetDeposit.AssetDeposit).contracts;
+  const allAssetDeposits = userContext.useStreamQueries(Service).contracts;
   const rowData: any[] =[]
   allAssetDeposits.map(( i )=>( rowData.push(i.payload) ))
-
-
-  console.log("assetDepositContracts", allAssetDeposits);
 
   return (
     <Grid
       item
-      xs={12}
+      xs={16}
       container
       direction="column"
       className={classes.maincontent}
@@ -47,9 +44,6 @@ const Account: React.FC = () => {
         colDef={ColDef}
         size={{ width: "100%", height: 300 }}
       />
-      {/* <Grid item justify="center">
-        Hello
-      </Grid> */}
     </Grid>
   );
 };

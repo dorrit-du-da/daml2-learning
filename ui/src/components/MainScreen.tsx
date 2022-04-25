@@ -3,8 +3,8 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { Image, Menu } from 'semantic-ui-react'
-import MainView from './MainView';
-import { User } from '@daml.js/daml2-learning';
+// import MainView from './MainView';
+// import { User } from '@daml.js/daml2-learning';
 import { PublicParty } from '../Credentials';
 import { userContext } from '../config';
 import clsx from 'clsx'
@@ -16,8 +16,9 @@ import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 
 import AppMenu from './appmenu/AppMenu'
-import Wallet from '../pages/account/Account'
+import Account from '../pages/account/Account'
 import Home from '../pages/home/Home'
+import Registration from '../pages/registration/Registration'
 
 
 type Props = {
@@ -29,7 +30,8 @@ const toAlias = (userId: string): string =>
   userId.charAt(0).toUpperCase() + userId.slice(1);
 
 const PageHome = () => <Home/>
-const PageDashboard = () => <Wallet/>
+const PageAccount = () => <Account/>
+const PageRegistration = () => <Registration/>
 const PageOrders = () => <Typography variant="h3" component="h1">Orders Page</Typography>
 const PageCustomers = () => <Typography variant="h3" component="h1">Customers Page</Typography>
 const PageReports = () => <Typography variant="h3" component="h1">Reports Page</Typography>
@@ -52,39 +54,37 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
   const [createdUser, setCreatedUser] = useState(false);
   const [createdAlias, setCreatedAlias] = useState(false);
 
-  const createUserMemo = useCallback(async () => {
-    try {
-      let userContract = await ledger.fetchByKey(User.User, party);
-      if (userContract === null) {
-        const user = {username: party, following: []};
-        userContract = await ledger.create(User.User, user);
-      }
-      setCreatedUser(true);
-    } catch(error) {
-      alert(`Unknown error:\n${JSON.stringify(error)}`);
-    }
-  }, [ledger, party]);
+  // const createUserMemo = useCallback(async () => {
+  //   try {
+  //     let userContract = await ledger.fetchByKey(User.User, party);
+  //     if (userContract === null) {
+  //       const user = {username: party, following: []};
+  //       userContract = await ledger.create(User.User, user);
+  //     }
+  //     setCreatedUser(true);
+  //   } catch(error) {
+  //     alert(`Unknown error:\n${JSON.stringify(error)}`);
+  //   }
+  // }, [ledger, party]);
 
-  const createAliasMemo = useCallback(async () => {
-    if (publicParty) {
-      try {
-        let userAlias = await ledger.fetchByKey(User.Alias, {_1: party, _2: publicParty});
-        if (userAlias === null) {
-           await ledger.create(User.Alias, {username: party, alias: toAlias(user.userId), public: publicParty});
-        }
-      } catch(error) {
-        alert(`Unknown error:\n${JSON.stringify(error)}`);
-      }
-      setCreatedAlias(true);
-    }
-  }, [ledger, user, publicParty, party]);
+  // const createAliasMemo = useCallback(async () => {
+  //   if (publicParty) {
+  //     try {
+  //       let userAlias = await ledger.fetchByKey(User.Alias, {_1: party, _2: publicParty});
+  //       if (userAlias === null) {
+  //          await ledger.create(User.Alias, {username: party, alias: toAlias(user.userId), public: publicParty});
+  //       }
+  //     } catch(error) {
+  //       alert(`Unknown error:\n${JSON.stringify(error)}`);
+  //     }
+  //     setCreatedAlias(true);
+  //   }
+  // }, [ledger, user, publicParty, party]);
 
-  useEffect(() => {createUserMemo();} , [createUserMemo])
-  useEffect(() => {createAliasMemo();} , [createAliasMemo])
+  // useEffect(() => {createUserMemo();} , [createUserMemo])
+  // useEffect(() => {createAliasMemo();} , [createAliasMemo])
 
-  if (!(createdUser && createdAlias)) {
-    return <h1>Logging in...</h1>;
-  } else {
+
     return (
       <>
       <BrowserRouter>
@@ -103,8 +103,8 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
 
             <Switch>
               <Route exact path="/"  component={PageHome} />
-              <Route exact path="/account"  component={PageDashboard} />
-              <Route path="/registration" component={PageOrders} />
+              <Route exact path="/account"  component={PageAccount} />
+              <Route path="/registration" component={PageRegistration} />
               <Route path="/distribution" component={PageCustomers} />
               <Route path="/subscription" component={PageReports} />
             </Switch>
@@ -140,7 +140,6 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
         <MainView /> */}
       </>
     );
-  }
 };
 
 
