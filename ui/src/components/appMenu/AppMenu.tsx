@@ -15,9 +15,9 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 import { userContext } from '../../config';
-import AppMenuItem from "./AppMenuItem";
-import AppMenuItemComponent from './AppMenuItemComponent'
-import logoSVG from  "../../image/header_logo.jpeg"
+import AppMenuItem from './AppMenuItem';
+import AppMenuItemComponent from './AppMenuItemComponent';
+import logoSVG from  "../../image/header_logo.jpeg";
 
 const appMenuItems = [
   {

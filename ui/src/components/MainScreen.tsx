@@ -15,7 +15,7 @@ import Drawer from '@material-ui/core/Drawer'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 
-import AppMenu from './appmenu/AppMenu'
+import AppMenu from './appMenu/AppMenu'
 import Wallet from '../pages/account/Account'
 import Home from '../pages/home/Home'
 
