@@ -13,7 +13,7 @@ import DamlHub, {
 } from "@daml/hub-react";
 import Credentials from "../Credentials";
 import { authConfig, userContext, publicContext } from "../config";
-
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 /**
  * React component for the entry point into the application.
@@ -49,6 +49,7 @@ const App: React.FC = () => {
       );
     return (
       <Wrap>
+         <ThemeProvider theme={darkTheme}>
         <userContext.DamlLedger
           token={credentials.token}
           party={credentials.party}
@@ -63,6 +64,7 @@ const App: React.FC = () => {
             }}
           />
         </userContext.DamlLedger>
+        </ThemeProvider>
       </Wrap>
     );
   } else {
@@ -72,3 +74,5 @@ const App: React.FC = () => {
 // APP_END
 
 export default App;
+
+const darkTheme = createTheme({ palette: { mode: 'dark' } });

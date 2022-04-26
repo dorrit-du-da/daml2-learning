@@ -1,37 +1,53 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from "react";
+import { Route, Switch, Link } from "react-router-dom";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
-import RegDialog from "./RegDialog"
+import RegistrationForm from "./RegistrationForm";
+
+const PageRegistrationForm = () => <RegistrationForm />;
 
 const Registration: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Grid
-      item
-      xs={16}
-      container
-      direction="column"
-      className={classes.maincontent}
-    >
+    <>
       <Grid item />
-      <Grid item>
-        <Typography gutterBottom variant="h4"  className={classes.titlepad}>
-          Registration
-        </Typography>
-        <RegDialog/>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+      >
+        <Grid item>
+          <Typography gutterBottom variant="h4" className={classes.titlepad}>
+            Registration
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Link to={"/registration/new"}>
+            <Button size="large" className={classes.button} variant="contained">New</Button>
+          </Link>
+        </Grid>
       </Grid>
-    </Grid>
+      <Switch>
+        <Route
+          exact
+          path="/registration/new"
+          component={PageRegistrationForm}
+        />
+      </Switch>
+    </>
   );
 };
 
 export default Registration;
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,
@@ -49,7 +65,13 @@ const useStyles = makeStyles((theme) =>
       paddingLeft: 8,
       paddingBottom: 20,
       color: "#fbcd14",
-      fontWeight: "bold"
+      fontWeight: "bold",
     },
+    button: {
+      "&.MuiButton-contained": {
+        backgroundColor: "#fbcd14",
+        width: "100%"
+      },
+    }
   })
 );

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material";
-import { ColDef, GridApi, RowClickedEvent } from "ag-grid-community";
+import { ColDef, GridApi, RowClickedEvent, GetContextMenuItemsParams, MenuItemDef} from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
+
 
 const GridStyledWrapper = styled("div")(({ theme }) => ({
   display: "flex",
@@ -19,6 +20,7 @@ interface DataGridProps<T> {
   // contextMenu: T[]
   rowClickHandler?: (event: RowClickedEvent) => void;
 }
+
 
 export const DataGrid = <T,>({
   showNoRowsOverlay,
@@ -69,7 +71,7 @@ export const DataGrid = <T,>({
             floatingFilter: true,
             resizable: true,
           }}
-          onRowClicked={rowClickHandler}
+          // onRowClicked={rowClickHandler}
         ></AgGridReact>
       </div>
     </GridStyledWrapper>

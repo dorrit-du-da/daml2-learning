@@ -5,7 +5,13 @@ import { encode } from 'jwt-simple';
 import { isRunningOnHub } from '@daml/hub-react';
 import Ledger, { CanReadAs } from '@daml/ledger';
 import { createLedgerContext } from "@daml/react";
+import { Map, emptyMap } from '@daml/types';
 
+type DamlSet<T> = { map: Map<T, {}> };
+
+export function makeDamlSet<T>(items: T[]): DamlSet<T> {
+  return { map: items.reduce((map, val) => map.set(val, {}), emptyMap<T, {}>()) };
+}
 // Context for the party of the user.
 export const userContext = createLedgerContext();
 // Context for the public party used to query user aliases.
