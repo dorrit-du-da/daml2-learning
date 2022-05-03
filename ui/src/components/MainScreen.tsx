@@ -14,6 +14,7 @@ import Account from '../pages/account/Account';
 import Distribution from '../pages/distribution/Distribution';
 import Home from '../pages/home/Home';
 import Registration from '../pages/registration/Registration';
+import Subscription from '../pages/subscription/Subscription';
 import AppMenu from './appMenu/AppMenu';
 
 type Props = {
@@ -27,6 +28,7 @@ const PageHome = () => <Home/>
 const PageAccount = () => <Account/>
 const PageRegistration = () => <Registration/>
 const PageDistribution = () => <Distribution/>
+const PageSubscription = () => <Subscription/>
 
 
 /**
@@ -56,7 +58,7 @@ const MainScreen: React.FC<Props> = ({onLogout}) => {
               <Route exact path="/account"  component={PageAccount} />
               <Route path="/registration" component={PageRegistration} />
               <Route path="/distribution" component={PageDistribution} />
-              <Route path="/subscription" component={PageDistribution} />
+              <Route path="/subscription" component={PageSubscription} />
             </Switch>
 
           </Container>

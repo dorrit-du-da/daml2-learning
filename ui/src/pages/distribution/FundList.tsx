@@ -5,7 +5,7 @@ import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Mod
 import { Button } from "@mui/material";
 
 import { userContext } from "../../config";
-import TableGrid from "./Common/TableGrid";
+import TableGrid from "../../components/tableGrid/TableGrid";
 import { DistributionCommonProps } from "./config";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";

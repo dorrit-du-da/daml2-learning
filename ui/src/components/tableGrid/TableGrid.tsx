@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { ColDef } from "ag-grid-community";
 import React from "react";
-import { DataGrid } from "../../../components/datagrid/Grid";
+import { DataGrid } from "../datagrid/Grid";
 import styles from "./TableGrid.module.css";
 
 type Props<T> = {

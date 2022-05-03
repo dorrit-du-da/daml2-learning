@@ -8,7 +8,7 @@ import {
 import { Button } from '@mui/material';
 
 import { userContext } from '../../config';
-import TableGrid from './Common/TableGrid';
+import TableGrid from '../../components/tableGrid/TableGrid';
 import { DistributionCommonProps } from './config';
 
 type Props = {
