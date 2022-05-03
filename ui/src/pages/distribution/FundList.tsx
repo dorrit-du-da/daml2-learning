@@ -2,12 +2,13 @@ import React from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
-import { Role as FundManagerRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Role";
 import { Button } from "@mui/material";
 
 import { userContext } from "../../config";
 import TableGrid from "./Common/TableGrid";
 import { DistributionCommonProps } from "./config";
+import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
+import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
 
 type Props = {
   common: DistributionCommonProps;
@@ -28,17 +29,6 @@ const FundList: React.FC<Props> = (props: Props) => {
     { field: "investmentObjective" },
   ];
 
-  let fundManagerRole = userContext.useStreamFetchByKey(
-    FundManagerRole,
-    () => {
-      return {
-        _1: props.common.operator,
-        _2: props.common.currentParty,
-      };
-    },
-    [props.common.currentParty, props.common.operator]
-  ).contract;
-
   const addDistributorButtonRenderer = (params: ICellRendererParams) => {
     return (
       <Button
@@ -53,11 +43,35 @@ const FundList: React.FC<Props> = (props: Props) => {
     );
   };
 
-  if (fundManagerRole) {
+  if (props.common.fundManagerRole) {
     fundColDefs.push({
       field: "isinCode",
       headerName: "Add Distributor",
       cellRenderer: addDistributorButtonRenderer,
+    });
+  }
+
+  // todo judy why can't put it into below
+  const agreements = userContext.useStreamQuery(
+    DistributionAgreement
+  ).contracts;
+
+  if (props.common.distributorRole) {
+    fundColDefs.push({
+      field: "isinCode",
+      headerName: "Agreement Made",
+      cellRenderer: (param: ICellRendererParams) => {
+        const agreement = agreements.find(
+          (agreement) =>
+            agreement.payload.isinCode == param.value &&
+            agreement.payload.distributor == props.common.currentParty
+        );
+        return agreement ? (
+          <FaHandshake size="28" />
+        ) : (
+          <FaHandshakeSlash size="28" />
+        );
+      },
     });
   }
 
