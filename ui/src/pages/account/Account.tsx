@@ -1,14 +1,14 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from '@mui/styles';
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import { AssetDeposit } from '@daml.js/da-marketplace/lib/DA/Finance/Asset';
 import { Service } from '@daml.js/da-marketplace/lib/Marketplace/Custody/Service';
 
-import { DataGrid } from "../../components/datagrid/Grid"
+import { DataGrid } from "../../components/datagrid/Grid.backup"
 import { userContext } from "../../config";
 import { ColDef } from "./config"
 
@@ -35,11 +35,6 @@ const Account: React.FC = () => {
         </Typography>
       </Grid>
       <DataGrid
-        gridData={ rowData || []}
-        colDef={ColDef}
-        size={{ width: "100%", height: 300 }}
-      />
-        <DataGrid
         gridData={ rowData || []}
         colDef={ColDef}
         size={{ width: "100%", height: 300 }}

@@ -12,6 +12,19 @@ type DamlSet<T> = { map: Map<T, {}> };
 export function makeDamlSet<T>(items: T[]): DamlSet<T> {
   return { map: items.reduce((map, val) => map.set(val, {}), emptyMap<T, {}>()) };
 }
+
+
+export function damlSetValues<T>(damlSet: DamlSet<T>): T[] {
+  const r: T[] = [];
+  const it = damlSet.map.keys();
+  let i = it.next();
+  while (!i.done) {
+    r.push(i.value);
+    i = it.next();
+  }
+  return r;
+}
+
 // Context for the party of the user.
 export const userContext = createLedgerContext();
 // Context for the public party used to query user aliases.

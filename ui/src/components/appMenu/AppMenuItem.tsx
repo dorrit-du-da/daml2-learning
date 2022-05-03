@@ -1,17 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles, createStyles } from '@material-ui/core/styles'
-// import { SvgIconProps } from '@material-ui/core/SvgIcon'
+import { createStyles, makeStyles } from '@mui/styles';
 
-import List from '@material-ui/core/List'
+import List from '@mui/material/List'
 
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
-import Collapse from '@material-ui/core/Collapse'
+import ListItemIcon from '@mui/material//ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import Divider from '@mui/material/Divider'
+import Collapse from '@mui/material/Collapse'
 
-import IconExpandLess from '@material-ui/icons/ExpandLess'
-import IconExpandMore from '@material-ui/icons/ExpandMore'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 import AppMenuItemComponent from './AppMenuItemComponent'
 
@@ -47,14 +46,14 @@ const AppMenuItem: React.FC<AppMenuItemProps> = props => {
     <AppMenuItemComponent className={classes.menuItem} link={link} onClick={handleClick}>
       {/* Display an icon if any */}
       {!!Icon && (
-        <ListItemIcon className={classes.menuItemIcon}>
+        <ListItemIcon >
           <Icon />
         </ListItemIcon>
       )}
       <ListItemText primary={name} inset={!Icon} />
       {/* Display the expand menu if the item has children */}
-      {isExpandable && !open && <IconExpandMore />}
-      {isExpandable && open && <IconExpandLess />}
+      {isExpandable && !open && <ExpandMoreIcon />}
+      {isExpandable && open && <ExpandLessIcon />}
     </AppMenuItemComponent>
   )
 
@@ -77,18 +76,18 @@ const AppMenuItem: React.FC<AppMenuItemProps> = props => {
   )
 }
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles(() =>
   createStyles({
     menuItem: {
+      '& .MuiListItemIcon-root': {
+        color: "#fbcd14",
+      },
       '&.active': {
         background: 'rgba(0, 0, 0, 0.08)',
         '& .MuiListItemIcon-root': {
           color: '#fff',
         },
       },
-    },
-    menuItemIcon: {
-      color: '#fbcd14',
     },
     divider: {
       background: 'white',

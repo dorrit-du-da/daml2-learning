@@ -17,9 +17,8 @@ interface DataGridProps<T> {
   size: { height: number | string; width: number | string };
   gridData: T[];
   colDef: ColDef[];
-  frameworkComponents?:any;
-  getRowStyle?: any;
-  rowClickHandler?: (event: RowClickedEvent) => void ;
+  // contextMenu: T[]
+  rowClickHandler?: (event: RowClickedEvent) => void;
 }
 
 
@@ -27,9 +26,8 @@ export const DataGrid = <T,>({
   showNoRowsOverlay,
   size,
   gridData,
-  frameworkComponents,
+  // contextMenu,
   colDef,
-  getRowStyle = undefined,
   rowClickHandler = undefined,
 }: DataGridProps<T>): JSX.Element => {
   const [gridApi, setGridApi] = useState<GridApi>();
@@ -40,9 +38,6 @@ export const DataGrid = <T,>({
     setGridApi(params.api);
     setGridColumnApi(params.columnApi);
   };
-
-
-
   // const getContextMenuItems =  function getContextMenuItems(params:any) {
   //   return contextMenu
   // }
@@ -67,17 +62,16 @@ export const DataGrid = <T,>({
           onGridReady={onGridReady}
           rowSelection={"single"}
           columnDefs={colDef}
-          frameworkComponents={frameworkComponents}
+          // getContextMenuItems={getContextMenuItems}
           defaultColDef={{
             flex: 1,
             editable: false,
             sortable: true,
-            // filter: 'agSetColumnFilter',
-            // floatingFilter: true,
+            filter: 'agSetColumnFilter',
+            floatingFilter: true,
             resizable: true,
           }}
-          getRowStyle={getRowStyle}
-          onRowClicked={event => rowClickHandler?rowClickHandler(event):console.log("no handler")}
+          // onRowClicked={rowClickHandler}
         ></AgGridReact>
       </div>
     </GridStyledWrapper>

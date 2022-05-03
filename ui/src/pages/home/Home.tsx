@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from '@mui/styles';
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <Grid item />
       <Grid item>
         <Typography gutterBottom variant="h4" className={classes.titlepad}>
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-    </Box>
+    </>
   );
 };
 
