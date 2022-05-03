@@ -5,7 +5,6 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import { AssetDeposit } from '@daml.js/da-marketplace/lib/DA/Finance/Asset';
 import { Service } from '@daml.js/da-marketplace/lib/Marketplace/Custody/Service';
 
 import { DataGrid } from "../../components/datagrid/Grid"

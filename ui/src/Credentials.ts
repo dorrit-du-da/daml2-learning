@@ -15,7 +15,6 @@ export type Credentials = {
   party: string;
   token: string;
   user: User;
-  getPublicParty: () => PublicParty;
 };
 
 export default Credentials;

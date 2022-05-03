@@ -7,7 +7,6 @@ import Credentials, { PublicParty } from "../../Credentials";
 import Ledger from "@daml/ledger";
 import {
   DamlHubLogin as DamlHubLoginBtn,
-  usePublicParty,
 } from "@daml/hub-react";
 import { authConfig, Insecure } from "../../config";
 
@@ -59,7 +58,7 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
   const InsecureLogin: React.FC<{ auth: Insecure }> = ({ auth }) => {
     const [username, setUsername] = React.useState("");
 
-    const handleLogin = async (event: React.FormEvent) => {
+    const handleLogin = async (event: React.FormEvent) => {  
       event.preventDefault();
       const token = auth.makeToken(username);
       const ledger = new Ledger({ token: token });
@@ -100,8 +99,7 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
       await login({
         user: { userId: username, primaryParty: primaryParty },
         party: primaryParty,
-        token: auth.makeToken(username),
-        getPublicParty: useGetPublicParty,
+        token: auth.makeToken(username)
       });
     };
 
@@ -135,11 +133,7 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
             login({
               party: creds.party,
               user: { userId: creds.partyName, primaryParty: creds.party },
-              token: creds.token,
-              getPublicParty: () => ({
-                usePublicParty: () => usePublicParty(),
-                setup: () => {},
-              }),
+              token: creds.token
             });
           }
         }}
