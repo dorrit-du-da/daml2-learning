@@ -7,3 +7,5 @@ node_modules
 *.log
 
 ui/daml.js
+ui/da-marketplace.js
+ui/package-lock.json
