@@ -89,4 +89,7 @@ const darkTheme = createTheme({
     background: {
       default: "#222628"
     },
+    primary:{
+      main: "#fbcd14"
+    },
     mode: "dark" } });

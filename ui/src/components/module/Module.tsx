@@ -22,12 +22,12 @@ const Module: React.FC<Props> = ({ link, title, description, logo}) => {
 
   return (
     <Link to={link}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 500 }}>
         <CardActionArea>
           <CardMedia
             className={classes.image}
             component="img"
-            height="140"
+            height="200"
             image={logo}
             alt="green iguana"
           />

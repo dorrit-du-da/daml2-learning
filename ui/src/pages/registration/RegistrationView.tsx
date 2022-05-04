@@ -12,13 +12,14 @@ import { createTheme } from "@mui/material/styles";
 import { FundRegistrationRequest } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Registration/Model";
 
 import { DataGrid } from "../../components/datagrid/Grid";
+import { DataGrid2 } from "../../components/datagrid/GridTest";
 import ProgressStatus from "./ProgressStatus";
 import { userContext, damlSetValues } from "../../config";
 import {
   fundRegistrationRequestsWithActionColDef,
   frameworkComponents,
   SignedParties,
-  changeRowColor,
+  // changeRowColor,
 } from "./config";
 
 const RegistrationView: React.FC = () => {
@@ -102,7 +103,6 @@ const RegistrationView: React.FC = () => {
           size={{ width: "100%", height: 300 }}
           frameworkComponents={frameworkComponents}
           rowClickHandler={rowClickHandler}
-          getRowStyle={changeRowColor}
         />
       </Grid>
     </Grid>

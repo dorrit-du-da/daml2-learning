@@ -46,8 +46,7 @@ export const fundRegistrationRequestsColDef = [
   { field: "transferAgent", flex: 2 , hide: true},
   { field: "settlementAgent", flex: 2 , hide: true},
   { field: "openAccountStatus", flex: 2, hide: true},
-  { field: "actionRequired",flex: 3 , cellStyle: {color: 'red', 'background-color': 'green'} },
-  { field: "title",flex: 3 , cellStyle: {color: 'red', 'background-color': 'green'} },
+  { field: "title",flex: 3 , cellStyle: {color: 'red'} },
   { field: "investmentStrategy", flex: 3 },
   { field: "investmentObjective", flex: 3 },
   { field: "dealingFrequency", flex: 2 },
@@ -76,10 +75,17 @@ export const rowClassRules = {
   },
 }
 
-export function changeRowColor(params: ICellRendererParams) {
-  console.log("changeRowColor")
-  if (params.data.title === 'fund_fund') {
-    console.log("changeRowColor-call")
-      return { 'backgroundColor': '#red' };
-  }
-}
+
+
+
+// export function changeRowColor(params: ICellRendererParams) {
+//   'sick-days-warning': function (params) {
+//     var numSickDays = params.data.sickDays;
+//     return numSickDays > 5 && numSickDays <= 7;
+//   },
+//   // row style expression
+//   'sick-days-breach': 'data.sickDays >= 8',
+// },
+// }
+  
+// }

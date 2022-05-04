@@ -17,17 +17,19 @@ interface DataGridProps<T> {
   size: { height: number | string; width: number | string };
   gridData: T[];
   colDef: ColDef[];
-  // contextMenu: T[]
-  rowClickHandler?: (event: RowClickedEvent) => void;
+  frameworkComponents?:any;
+  getRowStyle?: any;
+  rowClickHandler?: (event: RowClickedEvent) => void ;
 }
 
 
-export const DataGrid = <T,>({
+export const DataGrid2 = <T,>({
   showNoRowsOverlay,
   size,
   gridData,
-  // contextMenu,
+  frameworkComponents,
   colDef,
+  getRowStyle = undefined,
   rowClickHandler = undefined,
 }: DataGridProps<T>): JSX.Element => {
   const [gridApi, setGridApi] = useState<GridApi>();
@@ -38,6 +40,9 @@ export const DataGrid = <T,>({
     setGridApi(params.api);
     setGridColumnApi(params.columnApi);
   };
+
+
+
   // const getContextMenuItems =  function getContextMenuItems(params:any) {
   //   return contextMenu
   // }
@@ -48,7 +53,11 @@ export const DataGrid = <T,>({
     }
   }, [gridApi, showNoRowsOverlay]);
 
-
+  const rowClassRules =  {
+    "ag-green": "data.title != 'abc'",
+    "ag-amber": "data.amount > 100 && data.amount <= 200",
+    "ag-red": "data.amount <= 100",
+  }
 
   return (
 
@@ -62,16 +71,15 @@ export const DataGrid = <T,>({
           onGridReady={onGridReady}
           rowSelection={"single"}
           columnDefs={colDef}
-          // getContextMenuItems={getContextMenuItems}
+          frameworkComponents={frameworkComponents}
           defaultColDef={{
             flex: 1,
             editable: false,
             sortable: true,
-            filter: 'agSetColumnFilter',
-            floatingFilter: true,
             resizable: true,
           }}
-          // onRowClicked={rowClickHandler}
+          rowClassRules={rowClassRules}
+          onRowClicked={event => rowClickHandler?rowClickHandler(event):console.log("no handler")}
         ></AgGridReact>
       </div>
     </GridStyledWrapper>

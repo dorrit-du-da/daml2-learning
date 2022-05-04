@@ -15,7 +15,7 @@ import {
   DealingFrequency,
   DividendPolicy,
 } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Registration/Util";
-import { Alias } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Onboarding/Model";
+import { Alias } from "@daml.js/da-marketplace/lib/Tests/FundManagement/Setup";
 import { Role as FundManagerRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Role";
 import { Id } from "@daml.js/da-marketplace/lib/DA/Finance/Types";
 import { Currency } from "@daml.js/da-marketplace/lib/DA/Finance/Instrument/FX/Currency";
@@ -68,8 +68,13 @@ const RegistrationForm: React.FC = () => {
     investmentManager: "",
     fundAdmin: "",
     settlementAgent: "",
-    transferAgent: "",
+    transferAgent: ""
   });
+
+  const alias = userContext.useStreamQueries(
+    Alias
+  ).contracts.find(c=>(c.payload.currentParty == username))
+  // if (!alias) return (<></>)
 
   const allUsers = userContext.useStreamQueries(
     Alias,
@@ -111,7 +116,7 @@ const RegistrationForm: React.FC = () => {
         await ledger.exercise(
           FundManagerRole.RequestFundRegistration,
           fundManagerRole?.contractId,
-          { ...fundDetails }
+          { ...fundDetails , observers: makeDamlSet<string>([username, alias!.payload.public]) }
         );
         history.push("/registration/view");
         enqueueSnackbar('Fund requested successfully!', { variant: "success" })
@@ -291,13 +296,10 @@ const RegistrationForm: React.FC = () => {
             >
               {allUsers.map((option) => (
                 <MenuItem
-                  key={option.payload.username}
-                  value={option.payload.username}
+                  key={option.payload.currentParty}
+                  value={option.payload.currentParty}
                 >
-                  {option.payload.username.substring(
-                    0,
-                    option.payload.username.indexOf(":")
-                  )}
+                  {option.payload.displayName}
                 </MenuItem>
               ))}
             </TextField>
@@ -315,13 +317,10 @@ const RegistrationForm: React.FC = () => {
             >
               {allUsers.map((option) => (
                 <MenuItem
-                  key={option.payload.username}
-                  value={option.payload.username}
+                  key={option.payload.currentParty}
+                  value={option.payload.currentParty}
                 >
-                  {option.payload.username.substring(
-                    0,
-                    option.payload.username.indexOf(":")
-                  )}
+                 {option.payload.displayName}
                 </MenuItem>
               ))}
             </TextField>
@@ -338,13 +337,10 @@ const RegistrationForm: React.FC = () => {
             >
               {allUsers.map((option) => (
                 <MenuItem
-                  key={option.payload.username}
-                  value={option.payload.username}
+                  key={option.payload.currentParty}
+                  value={option.payload.currentParty}
                 >
-                  {option.payload.username.substring(
-                    0,
-                    option.payload.username.indexOf(":")
-                  )}
+                {option.payload.displayName}
                 </MenuItem>
               ))}
             </TextField>
@@ -361,13 +357,10 @@ const RegistrationForm: React.FC = () => {
             >
               {allUsers.map((option) => (
                 <MenuItem
-                  key={option.payload.username}
-                  value={option.payload.username}
+                  key={option.payload.currentParty}
+                  value={option.payload.currentParty}
                 >
-                  {option.payload.username.substring(
-                    0,
-                    option.payload.username.indexOf(":")
-                  )}
+                        {option.payload.displayName}
                 </MenuItem>
               ))}
             </TextField>

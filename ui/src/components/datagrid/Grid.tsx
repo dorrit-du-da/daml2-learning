@@ -72,8 +72,6 @@ export const DataGrid = <T,>({
             flex: 1,
             editable: false,
             sortable: true,
-            // filter: 'agSetColumnFilter',
-            // floatingFilter: true,
             resizable: true,
           }}
           getRowStyle={getRowStyle}
