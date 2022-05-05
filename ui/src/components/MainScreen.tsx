@@ -2,23 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useState } from 'react'
-import { Image, Menu } from 'semantic-ui-react'
-import MainView from './MainView';
-import { User } from '@daml.js/daml2-learning';
 import { PublicParty } from '../Credentials';
 import { userContext } from '../config';
 import clsx from 'clsx'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Drawer from '@material-ui/core/Drawer'
-import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
+import {  makeStyles } from '@mui/styles';
+import Drawer from '@mui/material/Drawer'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
 
-import AppMenu from './appmenu/AppMenu'
-import Wallet from '../pages/account/Account'
+import AppMenu from './appMenu/AppMenu'
+import Account from '../pages/account/Account'
 import Home from '../pages/home/Home'
-
+import RegistrationView from '../pages/registration/RegistrationView'
+import RegistrationForm from '../pages/registration/RegistrationForm'
+import { createTheme } from '@mui/material/styles';
 
 type Props = {
   onLogout: () => void;
@@ -28,11 +26,10 @@ type Props = {
 const toAlias = (userId: string): string =>
   userId.charAt(0).toUpperCase() + userId.slice(1);
 
-const PageHome = () => <Home/>
-const PageDashboard = () => <Wallet/>
+
 const PageOrders = () => <Typography variant="h3" component="h1">Orders Page</Typography>
-const PageCustomers = () => <Typography variant="h3" component="h1">Customers Page</Typography>
-const PageReports = () => <Typography variant="h3" component="h1">Reports Page</Typography>
+const PageCustomers = () => <Typography variant="h3" component="h1">Distribution Page</Typography>
+const PageReports = () => <Typography variant="h3" component="h1">Subscription Page</Typography>
 
 
 /**
@@ -52,44 +49,41 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
   const [createdUser, setCreatedUser] = useState(false);
   const [createdAlias, setCreatedAlias] = useState(false);
 
-  const createUserMemo = useCallback(async () => {
-    try {
-      let userContract = await ledger.fetchByKey(User.User, party);
-      if (userContract === null) {
-        const user = {username: party, following: []};
-        userContract = await ledger.create(User.User, user);
-      }
-      setCreatedUser(true);
-    } catch(error) {
-      alert(`Unknown error:\n${JSON.stringify(error)}`);
-    }
-  }, [ledger, party]);
+  // const createUserMemo = useCallback(async () => {
+  //   try {
+  //     let userContract = await ledger.fetchByKey(User.User, party);
+  //     if (userContract === null) {
+  //       const user = {username: party, following: []};
+  //       userContract = await ledger.create(User.User, user);
+  //     }
+  //     setCreatedUser(true);
+  //   } catch(error) {
+  //     alert(`Unknown error:\n${JSON.stringify(error)}`);
+  //   }
+  // }, [ledger, party]);
 
-  const createAliasMemo = useCallback(async () => {
-    if (publicParty) {
-      try {
-        let userAlias = await ledger.fetchByKey(User.Alias, {_1: party, _2: publicParty});
-        if (userAlias === null) {
-           await ledger.create(User.Alias, {username: party, alias: toAlias(user.userId), public: publicParty});
-        }
-      } catch(error) {
-        alert(`Unknown error:\n${JSON.stringify(error)}`);
-      }
-      setCreatedAlias(true);
-    }
-  }, [ledger, user, publicParty, party]);
+  // const createAliasMemo = useCallback(async () => {
+  //   if (publicParty) {
+  //     try {
+  //       let userAlias = await ledger.fetchByKey(User.Alias, {_1: party, _2: publicParty});
+  //       if (userAlias === null) {
+  //          await ledger.create(User.Alias, {username: party, alias: toAlias(user.userId), public: publicParty});
+  //       }
+  //     } catch(error) {
+  //       alert(`Unknown error:\n${JSON.stringify(error)}`);
+  //     }
+  //     setCreatedAlias(true);
+  //   }
+  // }, [ledger, user, publicParty, party]);
 
-  useEffect(() => {createUserMemo();} , [createUserMemo])
-  useEffect(() => {createAliasMemo();} , [createAliasMemo])
+  // useEffect(() => {createUserMemo();} , [createUserMemo])
+  // useEffect(() => {createAliasMemo();} , [createAliasMemo])
 
-  if (!(createdUser && createdAlias)) {
-    return <h1>Logging in...</h1>;
-  } else {
+
     return (
       <>
       <BrowserRouter>
       <div className={clsx('App', classes.root)}>
-        <CssBaseline />
         <Drawer
           variant="permanent"
           classes={{
@@ -102,9 +96,10 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
           <Container maxWidth="lg" className={classes.container}>
 
             <Switch>
-              <Route exact path="/"  component={PageHome} />
-              <Route exact path="/account"  component={PageDashboard} />
-              <Route path="/registration" component={PageOrders} />
+              <Route exact path="/"  component={Home} />
+              <Route exact path="/account"  component={Account} />
+              <Route exact path="/registration/view" component={RegistrationView} />
+              <Route exact path="/registration/new" component={RegistrationForm} />
               <Route path="/distribution" component={PageCustomers} />
               <Route path="/subscription" component={PageReports} />
             </Switch>
@@ -140,13 +135,13 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
         <MainView /> */}
       </>
     );
-  }
 };
 
 
 const drawerWidth = 240
+const theme = createTheme();
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme:any) => ({
   root: {
     display: 'flex',
     background:"black"
@@ -163,7 +158,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
+    overflow: 'scroll',
   },
   container: {
     paddingTop: theme.spacing(4),

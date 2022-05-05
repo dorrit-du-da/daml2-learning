@@ -23,7 +23,7 @@ interface DataGridProps<T> {
 }
 
 
-export const DataGrid = <T,>({
+export const DataGrid2 = <T,>({
   showNoRowsOverlay,
   size,
   gridData,
@@ -53,7 +53,11 @@ export const DataGrid = <T,>({
     }
   }, [gridApi, showNoRowsOverlay]);
 
-
+  const rowClassRules =  {
+    "ag-green": "data.title != 'abc'",
+    "ag-amber": "data.amount > 100 && data.amount <= 200",
+    "ag-red": "data.amount <= 100",
+  }
 
   return (
 
@@ -74,7 +78,7 @@ export const DataGrid = <T,>({
             sortable: true,
             resizable: true,
           }}
-          getRowStyle={getRowStyle}
+          rowClassRules={rowClassRules}
           onRowClicked={event => rowClickHandler?rowClickHandler(event):console.log("no handler")}
         ></AgGridReact>
       </div>

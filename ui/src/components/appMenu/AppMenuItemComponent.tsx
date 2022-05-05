@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import ListItem from '@material-ui/core/ListItem'
+import ListItem from '@mui/material/ListItem';
 import { NavLink, NavLinkProps } from 'react-router-dom'
 
 export interface AppMenuItemComponentProps {

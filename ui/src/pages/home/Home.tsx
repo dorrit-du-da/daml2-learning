@@ -1,69 +1,47 @@
-import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { experimentalStyled as styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from 'react';
+import { makeStyles, createStyles } from "@mui/styles";
+import {  Collapse } from '@mui/material';
 
-import Module from "../../components/module/Module";
-import logoSVG from "../../image/tech.png";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    fontFamily: 'Nunito',
+  },
+  colorText: {
+    color: '#fbcd14',
+  },
+  container: {
+    textAlign: 'center',
+  },
+  title: {
+    color: '#fff',
+    fontSize: '4.5rem',
+  }
 }));
-
-const Home: React.FC = () => {
+export default function Header() {
   const classes = useStyles();
-
+  const [checked, setChecked] = useState(false);
+  useEffect(() => {
+    setChecked(true);
+  }, []);
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid item />
-      <Grid item>
-        <Typography gutterBottom variant="h4" className={classes.titlepad}>
-          Home
-        </Typography>
-      </Grid>
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
+    <div className={classes.root} id="header">
+
+      <Collapse
+        in={checked}
+        {...(checked ? { timeout: 1000 } : {})}
       >
-        {Array.from(Array(6)).map((_, index) => (
-          <Grid item xs={2} sm={4} md={4} key={index}>
-            <Module link="account" title="test" description="test description" logo={logoSVG}/>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+        <div className={classes.container}>
+          <h1 className={classes.title}>
+            Welcome to <br />
+            <span className={classes.colorText}>Fund Management Demo.</span>
+          </h1>
+        </div>
+      </Collapse>
+    </div>
   );
-};
-
-export default Home;
-
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    fixed: {
-      flexGrow: 0,
-      flexShrink: 0,
-      flexBasis: "240px",
-    },
-    maincontent: {
-      flexGrow: 1,
-      padding: 20,
-    },
-    titlepad: {
-      paddingLeft: 8,
-      paddingBottom: 20,
-      color: "#fbcd14",
-      fontWeight: "bold"
-    },
-  })
-);
+}
