@@ -78,7 +78,7 @@ const AgreementProposalList = (props: Props) => {
   // ColDefs END
 
   const proposals = userContext
-    .useStreamQueries(DistributionAgreementProposal)
+    .useStreamQuery(DistributionAgreementProposal)
     .contracts.map((createdEvent) => createdEvent.payload);
 
   return (

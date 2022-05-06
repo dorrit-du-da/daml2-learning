@@ -1,18 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import {
-    Role as DistributorRole
-} from '@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor';
-import {
-    Role as FundManagerRole
-} from '@daml.js/da-marketplace/lib/Marketplace/FundManagement/Role';
-import { Alias } from '@daml.js/da-marketplace/lib/Tests/FundManagement/Setup';
+import { Role as DistributorRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor";
+import { Role as FundManagerRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Role";
+import { Alias } from "@daml.js/da-marketplace/lib/Tests/FundManagement/Setup";
 
-import { userContext } from '../../config';
-import AddDistributorForm from './AddDistributorForm';
-import AgreementProposalList from './AgreementProposalList';
-import { DistributionCommonProps } from './config';
-import FundList from './FundList';
+import { userContext } from "../../config";
+import AddDistributorForm from "./AddDistributorForm";
+import AgreementList from "./AgreementList";
+import AgreementProposalList from "./AgreementProposalList";
+import { DistributionCommonProps } from "./config";
+import FundList from "./FundList";
 
 const Distribution: React.FC = () => {
   // Prepare common data for distribution todo judy can we move these out?
@@ -23,13 +20,13 @@ const Distribution: React.FC = () => {
     currentParty,
   ]).contract?.payload;
 
+  const operator = alias ? alias.operator : "non-existent";
+
   const fundManagerAlias = aliases.filter(
-    (alias) => alias.payload.displayName == "FundManager" // not sure if this is the right way to find fundmanager
+    (alias) => alias.payload.displayName === "FundManager" // not sure if this is the right way to find fundmanager
   );
   const fundManager =
-    fundManagerAlias.length == 0 ? "" : fundManagerAlias[0].key;
-
-  const operator = alias ? alias.operator : "non-existent";
+    fundManagerAlias.length === 0 ? "" : fundManagerAlias[0].key;
 
   let fundManagerRole = userContext.useStreamFetchByKey(
     FundManagerRole,
@@ -61,15 +58,18 @@ const Distribution: React.FC = () => {
     fundManagerRole: fundManagerRole,
     distributorRole: distributorRole,
     alias: alias,
-    idToDisplayName: partyId => {
-      const currentAlias = aliases.filter((alias) => alias.key == partyId);
+    idToDisplayName: (partyId) => {
+      const currentAlias = aliases.filter((alias) => alias.key === partyId);
       const displayName =
-        currentAlias.length == 0 ? "current party has no alias" : currentAlias[0].payload.displayName;
+        currentAlias.length === 0
+          ? "current party has no alias"
+          : currentAlias[0].payload.displayName;
       return displayName;
-    }
+    },
   };
 
-  const [openAddDistributorForm, setOpenAddDistributorForm] = React.useState(false);
+  const [openAddDistributorForm, setOpenAddDistributorForm] =
+    React.useState(false);
   const [isinCode, setIsinCode] = React.useState("");
 
   return (
@@ -80,6 +80,7 @@ const Distribution: React.FC = () => {
         setOpen={setOpenAddDistributorForm}
       />
       <AgreementProposalList common={commonProps} />
+      <AgreementList common={commonProps} />
       <AddDistributorForm
         common={commonProps}
         setOpen={setOpenAddDistributorForm}
