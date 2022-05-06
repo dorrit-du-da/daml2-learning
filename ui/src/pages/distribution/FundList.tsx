@@ -27,6 +27,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     { field: "title", filter: true },
     { field: "investmentStrategy" },
     { field: "investmentObjective" },
+    {field: "isinCode"}
   ];
 
   const addDistributorButtonRenderer = (params: ICellRendererParams) => {
@@ -51,7 +52,6 @@ const FundList: React.FC<Props> = (props: Props) => {
     });
   }
 
-  // todo judy why can't put it into below
   const agreements = userContext.useStreamQuery(
     DistributionAgreement
   ).contracts;
@@ -63,8 +63,8 @@ const FundList: React.FC<Props> = (props: Props) => {
       cellRenderer: (param: ICellRendererParams) => {
         const agreement = agreements.find(
           (agreement) =>
-            agreement.payload.isinCode == param.value &&
-            agreement.payload.distributor == props.common.currentParty
+            agreement.payload.isinCode === param.value &&
+            agreement.payload.distributor === props.common.currentParty
         );
         return agreement ? (
           <FaHandshake size="28" />
