@@ -39,7 +39,7 @@ const FundList: React.FC<Props> = (props: Props) => {
           props.setIsinCode(params.value);
         }}
       >
-        Add Subscriber
+        Add Distributor
       </Button>
     );
   };
