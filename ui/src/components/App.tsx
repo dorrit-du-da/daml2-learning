@@ -1,10 +1,9 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback } from "react";
+import React from "react";
 import LoginScreen from "./login/LoginScreen";
 import MainScreen from "./MainScreen";
-import { createLedgerContext } from "@daml/react";
 import DamlHub, {
   damlHubLogout,
   isRunningOnHub,
@@ -16,7 +15,6 @@ import {
   authConfig,
   userContext,
   publicContext,
-  useGetPublicParty,
 } from "../config";
 
 /**
