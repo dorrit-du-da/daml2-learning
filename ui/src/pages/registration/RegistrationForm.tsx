@@ -73,14 +73,10 @@ const RegistrationForm: React.FC = () => {
 
   const alias = userContext.useStreamQueries(
     Alias
-  ).contracts.find(c=>(c.payload.currentParty == username))
+  ).contracts.find(c=>(c.payload.currentParty === username))
   // if (!alias) return (<></>)
 
-  const allUsers = userContext.useStreamQueries(
-    Alias,
-    () => [{ adminUser: true }],
-    []
-  ).contracts;
+  const allUsers = userContext.useStreamQueries(Alias).contracts;
   const allCurrencies = userContext.useStreamQueries(Currency).contracts;
   const fundManagerRole = userContext
     .useStreamQueries(FundManagerRole)

@@ -1,46 +1,30 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import React from "react";
 import clsx from "clsx";
-import React, { useCallback, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Container from "@mui/material/Container";
 import Drawer from "@mui/material/Drawer";
-import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 
-import { PublicParty } from "../Credentials";
 import Account from "../pages/account/Account";
+import Distribution from "../pages/distribution/Distribution";
 import Home from "../pages/home/Home";
 import RegistrationForm from "../pages/registration/RegistrationForm";
 import RegistrationView from "../pages/registration/RegistrationView";
+import Subscription from "../pages/subscription/Subscription";
 import AppMenu from "./appMenu/AppMenu";
 
 type Props = {
   onLogout: () => void;
-  getPublicParty: () => PublicParty;
 };
-
-const PageCustomers = () => (
-  <Typography variant="h3" component="h1">
-    Distribution Page
-  </Typography>
-);
-const PageReports = () => (
-  <Typography variant="h3" component="h1">
-    Subscription Page
-  </Typography>
-);
-
 /**
  * React component for the main screen of the `App`.
  */
-const MainScreen: React.FC<Props> = ({ onLogout, getPublicParty }) => {
+const MainScreen: React.FC<Props> = ({ onLogout }) => {
   const classes = useStyles();
-  const { setup } = getPublicParty();
-  const setupMemo = useCallback(setup, [setup]);
-  useEffect(setupMemo);
 
   return (
     <>
@@ -69,8 +53,8 @@ const MainScreen: React.FC<Props> = ({ onLogout, getPublicParty }) => {
                   path="/registration/new"
                   component={RegistrationForm}
                 />
-                <Route path="/distribution" component={PageCustomers} />
-                <Route path="/subscription" component={PageReports} />
+                <Route path="/distribution" component={Distribution} />
+                <Route path="/subscription" component={Subscription} />
               </Switch>
             </Container>
           </main>

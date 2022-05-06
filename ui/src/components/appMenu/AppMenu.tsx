@@ -4,7 +4,6 @@ import { createStyles, makeStyles } from '@mui/styles';
 import  List  from "@mui/material/List";
 import { ListItemText, Typography } from "@mui/material";
 import ListItemIcon from '@mui/material//ListItemIcon'
-import ListIcon from '@mui/icons-material/List';
 import Divider from "@mui/material/Divider";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from '@mui/icons-material/Home';
@@ -100,7 +99,7 @@ const AppMenu: React.FC<Props> = ({ onLogout }) => {
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     appMenu: {
       width: "100%",

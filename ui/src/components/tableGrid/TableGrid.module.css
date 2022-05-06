@@ -1,0 +1,12 @@
+.maincontent {
+  flex-grow: 1;  
+  padding: 20;
+}
+
+.titlepad {
+  padding-left: 8px;
+  padding-bottom: 20px;
+  color: #fbcd14;
+  font-weight: bold;
+  
+}
