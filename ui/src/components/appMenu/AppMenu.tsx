@@ -1,11 +1,10 @@
 import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from '@mui/styles';
 
-import { List,  } from "@material-ui/core";
+import  List  from "@mui/material/List";
 import { ListItemText, Typography } from "@mui/material";
-import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemIcon from '@mui/material//ListItemIcon'
 import Divider from "@mui/material/Divider";
-import IconLibraryBooks from "@material-ui/icons/LibraryBooks";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from '@mui/icons-material/Home';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -15,9 +14,9 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 
 import { userContext } from '../../config';
-import AppMenuItem from "./AppMenuItem";
-import AppMenuItemComponent from './AppMenuItemComponent'
-import logoSVG from  "../../image/header_logo.jpeg"
+import AppMenuItem from './AppMenuItem';
+import AppMenuItemComponent from './AppMenuItemComponent';
+import logoSVG from  "../../image/header_logo.jpeg";
 
 const appMenuItems = [
   {
@@ -32,7 +31,7 @@ const appMenuItems = [
   },
   {
     name: "Registration",
-    link: "/registration",
+    link: "/registration/view",
     Icon: AppRegistrationIcon,
   },
   {
@@ -80,14 +79,14 @@ const AppMenu: React.FC<Props> = ({ onLogout }) => {
     <img className={classes.img}  src={logoSVG} alt="logo" />
     <List component="nav" className={classes.appMenu} disablePadding>
   
-      <Typography align={'center'} gutterBottom={true} variant ='h6'>You are logged in as {user.userId}.</Typography>
+      <Typography align={'center'} gutterBottom={true} variant ='h6'>User: {user.userId}.</Typography>
       {appMenuItems.map((item, index) => (
         <AppMenuItem {...item} key={index} />
       ))}
       <Divider variant="middle" className={classes.divider} />
 
-      <AppMenuItemComponent className={classes.menuItem} link={"/#"}onClick={onLogout}>
-        <ListItemIcon className={classes.menuItemIcon}>
+      <AppMenuItemComponent className={classes.menuItem} link={"/#"} onClick={onLogout}>
+        <ListItemIcon >
           <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
@@ -100,7 +99,7 @@ const AppMenu: React.FC<Props> = ({ onLogout }) => {
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     appMenu: {
       width: "100%",
@@ -109,15 +108,16 @@ const useStyles = makeStyles((theme) =>
       width: drawerWidth,
     },
     menuItem: {
+      '& .MuiListItemIcon-root': {
+        color: "#fbcd14",
+      },
       '&.active': {
         background: 'rgba(0, 0, 0, 0.08)',
+        color: "#fbcd14",
         '& .MuiListItemIcon-root': {
           color: '#fff',
         },
       },
-    },
-    menuItemIcon: {
-      color: "#fbcd14",
     },
     divider: {
       background: "white",

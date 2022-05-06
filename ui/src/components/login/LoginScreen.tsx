@@ -2,11 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback } from "react";
-import { Button, Form, Grid, Header, Image, Segment } from "semantic-ui-react";
-import Credentials from "../../Credentials";
-import Ledger from "@daml/ledger";
+import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
+
 import { DamlHubLogin as DamlHubLoginBtn } from "@daml/hub-react";
+import Ledger from "@daml/ledger";
+
 import { authConfig, Insecure } from "../../config";
+import Credentials from "../../Credentials";
+import logoSVG from "../../image/header_logo.jpeg";
+import { createStyles, makeStyles } from "@mui/styles";
 
 type Props = {
   onLogin: (credentials: Credentials) => void;
@@ -16,6 +20,7 @@ type Props = {
  * React component for the login screen of the `App`.
  */
 const LoginScreen: React.FC<Props> = ({ onLogin }) => {
+  const classes = useStyles();
   const login = useCallback(
     async (credentials: Credentials) => {
       onLogin(credentials);
@@ -25,26 +30,16 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
 
   const wrap: (c: JSX.Element) => JSX.Element = (component) => (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
-      <Grid.Column style={{ maxWidth: 450 }}>
+      <Grid.Column style={{ maxWidth: 550, background: "#fff" }}>
+        <img className={classes.img} src={logoSVG} alt="logo" />
         <Header
           as="h1"
           textAlign="center"
           size="huge"
-          style={{ color: "#223668" }}
+          style={{ backgroundColor: "white", color: "black" }}
         >
           <Header.Content>
-            Create
-            <Image
-              as="a"
-              href="https://www.daml.com/"
-              target="_blank"
-              src="/daml.svg"
-              alt="Daml Logo"
-              spaced
-              size="small"
-              verticalAlign="bottom"
-            />
-            App
+            {"Fund Management & Distribution Demo"}
           </Header.Content>
         </Header>
         <Form size="large" className="test-select-login-screen">
@@ -69,7 +64,6 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
           alert(`Failed to login as '${username}':\n${errorMsg}`);
           throw error;
         });
-
       await login({
         user: { userId: username, primaryParty: primaryParty },
         party: primaryParty,
@@ -87,14 +81,10 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
           className="test-select-username-field"
           onChange={(e, { value }) => setUsername(value?.toString() ?? "")}
         />
-        <Button
-          primary
-          fluid
-          className="test-select-login-button"
-          onClick={handleLogin}
-        >
-          Log in
+        <Button onClick={handleLogin} variant="contained">
+          Login
         </Button>
+
         {/* FORM_END */}
       </>
     );
@@ -115,7 +105,7 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
         options={{
           method: {
             button: {
-              render: () => <Button primary fluid />,
+              render: () => <Button variant="contained">Contained</Button>,
             },
           },
         }}
@@ -130,5 +120,33 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
     <div>Invalid configuation.</div>
   );
 };
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    divider: {
+      background: "white",
+    },
+    img: {
+      maxWidth: "50%",
+      height: "auto",
+      padding: "10px",
+    },
+    root: {
+      minWidth: "100%",
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+    card: {
+      minWidth: "40%",
+      minHeight: "40vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#fff!important",
+    },
+  })
+);
 
 export default LoginScreen;

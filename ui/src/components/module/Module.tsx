@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from '@mui/styles';
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -22,12 +22,12 @@ const Module: React.FC<Props> = ({ link, title, description, logo}) => {
 
   return (
     <Link to={link}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 500 }}>
         <CardActionArea>
           <CardMedia
             className={classes.image}
             component="img"
-            height="140"
+            height="200"
             image={logo}
             alt="green iguana"
           />

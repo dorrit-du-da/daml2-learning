@@ -83,7 +83,7 @@ const AgreementProposalList = (props: Props) => {
 
   return (
     <>
-      {proposals && proposals.length && (
+      {proposals && proposals.length !== 0 && (
         <TableGrid
           title="Agreement Proposals"
           rowData={proposals}

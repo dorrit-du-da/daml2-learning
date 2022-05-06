@@ -1,100 +1,94 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
-import clsx from 'clsx';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from "react";
+import clsx from "clsx";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import { makeStyles } from '@material-ui/core/styles';
+import Container from "@mui/material/Container";
+import Drawer from "@mui/material/Drawer";
+import { makeStyles } from "@mui/styles";
 
-import Account from '../pages/account/Account';
-import Distribution from '../pages/distribution/Distribution';
-import Home from '../pages/home/Home';
-import Registration from '../pages/registration/Registration';
-import Subscription from '../pages/subscription/Subscription';
-import AppMenu from './appMenu/AppMenu';
+import Account from "../pages/account/Account";
+import Distribution from "../pages/distribution/Distribution";
+import Home from "../pages/home/Home";
+import RegistrationForm from "../pages/registration/RegistrationForm";
+import RegistrationView from "../pages/registration/RegistrationView";
+import Subscription from "../pages/subscription/Subscription";
+import AppMenu from "./appMenu/AppMenu";
 
 type Props = {
   onLogout: () => void;
-}
-
-const toAlias = (userId: string): string =>
-  userId.charAt(0).toUpperCase() + userId.slice(1);
-
-const PageHome = () => <Home/>
-const PageAccount = () => <Account/>
-const PageRegistration = () => <Registration/>
-const PageDistribution = () => <Distribution/>
-const PageSubscription = () => <Subscription/>
-
-
+};
 /**
  * React component for the main screen of the `App`.
  */
-const MainScreen: React.FC<Props> = ({onLogout}) => {
-  const classes = useStyles()
+const MainScreen: React.FC<Props> = ({ onLogout }) => {
+  const classes = useStyles();
 
-    return (
-      <>
+  return (
+    <>
       <BrowserRouter>
-      <div className={clsx('App', classes.root)}>
-        <CssBaseline />
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <AppMenu onLogout={onLogout}/>
-        </Drawer>
-        <main className={classes.content}>
-          <Container maxWidth="lg" className={classes.container}>
-
-            <Switch>
-              <Route exact path="/"  component={PageHome} />
-              <Route exact path="/account"  component={PageAccount} />
-              <Route path="/registration" component={PageRegistration} />
-              <Route path="/distribution" component={PageDistribution} />
-              <Route path="/subscription" component={PageSubscription} />
-            </Switch>
-
-          </Container>
-        </main>
-      </div>
-    </BrowserRouter>
-      </>
-    );
+        <div className={clsx("App", classes.root)}>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+          >
+            <AppMenu onLogout={onLogout} />
+          </Drawer>
+          <main className={classes.content}>
+            <Container maxWidth="lg" className={classes.container}>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/account" component={Account} />
+                <Route
+                  exact
+                  path="/registration/view"
+                  component={RegistrationView}
+                />
+                <Route
+                  exact
+                  path="/registration/new"
+                  component={RegistrationForm}
+                />
+                <Route path="/distribution" component={Distribution} />
+                <Route path="/subscription" component={Subscription} />
+              </Switch>
+            </Container>
+          </main>
+        </div>
+      </BrowserRouter>
+    </>
+  );
 };
 
+const drawerWidth = 240;
 
-const drawerWidth = 240
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
-    display: 'flex',
-    background:"black"
+    display: "flex",
+    background: "black",
   },
   drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
+    position: "relative",
+    whiteSpace: "nowrap",
     width: drawerWidth,
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
-    background: '#222628',
-    color: '#fff',
+    background: "#222628",
+    color: "#fff",
   },
   content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
+    height: "100vh",
+    overflow: "scroll",
   },
   container: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
-}))
+}));
 
 export default MainScreen;

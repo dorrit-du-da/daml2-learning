@@ -36,7 +36,7 @@ const AgreementList = (props: Props) => {
     <>
       {props.common.fundManagerRole &&
         agreements &&
-        agreements.length !== 0 && (
+        (agreements.length !== 0) && (
           <TableGrid
             title="Agreements"
             rowData={agreements}
