@@ -7,12 +7,11 @@ import { Button } from "@mui/material";
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
+import FundManagementContext from "../../store/fund-management-context";
 
-type Props = {
-  common: SubscriptionCommonProps;
-};
-let CalculatedFundResultList = (props: Props) => {
+let CalculatedFundResultList = () => {
+  const fundManagementContext = React.useContext(FundManagementContext);
+  const ledger = userContext.useLedger()
   const colDefs = [
     {
       field: "id",
@@ -23,7 +22,7 @@ let CalculatedFundResultList = (props: Props) => {
     {
       field: "fundManager",
       cellRenderer: (param: ICellRendererParams) =>
-        props.common.idToDisplayName(param.value),
+        fundManagementContext.idToDisplayName(param.value),
     },
     { field: "newInvestmentTotalAmount" },
     {
@@ -36,15 +35,12 @@ let CalculatedFundResultList = (props: Props) => {
   const approveCalculationHandler = async (
     cid: ContractId<CalculatedFundResult>
   ) => {
-    const result = await props.common.ledger.exercise(
-      CalculatedFundResult.ApproveCalculation,
-      cid,
-      {}
-    );
+    const result = await ledger
+      .exercise(CalculatedFundResult.ApproveCalculation, cid, {});
     console.log(result);
   };
 
-  if (props.common.fundManagerRole) {
+  if (fundManagementContext.fundManagerRole) {
     colDefs.push({
       field: "contractId",
       cellRenderer: (param: ICellRendererParams) => (
@@ -66,7 +62,8 @@ let CalculatedFundResultList = (props: Props) => {
 
   return (
     <>
-      {(props.common.fundAdminRole || props.common.fundManagerRole) && (
+      {(fundManagementContext.fundAdminRole ||
+        fundManagementContext.fundManagerRole) && (
         <TableGrid
           title="Calculated Results for Funds"
           rowData={calculatedResults}

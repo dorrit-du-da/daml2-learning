@@ -3,19 +3,16 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
-import { DistributionCommonProps } from "./config";
+import FundManagementContext from "../../store/fund-management-context";
 
-type Props = {
-  common: DistributionCommonProps;
-};
-
-const AgreementList = (props: Props) => {
+const AgreementList = () => {
+  const fundManagementContext = React.useContext(FundManagementContext)
   const agreements = userContext
     .useStreamQuery(DistributionAgreement)
     .contracts.map((agreement) => agreement.payload);
 
   const displayNameRenderer = (params: ICellRendererParams) =>
-    props.common.idToDisplayName(params.value);
+    fundManagementContext.idToDisplayName(params.value);
 
   let columnDefs: ColDef[] = [
     {
@@ -34,7 +31,7 @@ const AgreementList = (props: Props) => {
 
   return (
     <>
-      {props.common.fundManagerRole &&
+      {fundManagementContext.fundManagerRole &&
         agreements &&
         (agreements.length !== 0) && (
           <TableGrid

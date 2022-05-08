@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
@@ -6,18 +6,19 @@ import { Button } from "@mui/material";
 
 import { userContext } from "../../config";
 import TableGrid from "../../components/tableGrid/TableGrid";
-import { DistributionCommonProps } from "./config";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
+import FundManagementContext from "../../store/fund-management-context";
 
 type Props = {
-  common: DistributionCommonProps;
   setIsinCode: React.Dispatch<React.SetStateAction<string>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FundList: React.FC<Props> = (props: Props) => {
   const title = "Funds";
+  const fundManagementContext = useContext(FundManagementContext);
+  const currentParty = userContext.useParty();
 
   let funds = userContext
     .useStreamQuery(Fund)
@@ -27,7 +28,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     { field: "title", filter: true },
     { field: "investmentStrategy" },
     { field: "investmentObjective" },
-    {field: "isinCode"}
+    { field: "isinCode" },
   ];
 
   const addDistributorButtonRenderer = (params: ICellRendererParams) => {
@@ -44,7 +45,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     );
   };
 
-  if (props.common.fundManagerRole) {
+  if (fundManagementContext.fundManagerRole) {
     fundColDefs.push({
       field: "isinCode",
       headerName: "Add Distributor",
@@ -56,7 +57,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     DistributionAgreement
   ).contracts;
 
-  if (props.common.distributorRole) {
+  if (fundManagementContext.distributorRole) {
     fundColDefs.push({
       field: "isinCode",
       headerName: "Agreement Made",
@@ -64,7 +65,7 @@ const FundList: React.FC<Props> = (props: Props) => {
         const agreement = agreements.find(
           (agreement) =>
             agreement.payload.isinCode === param.value &&
-            agreement.payload.distributor === props.common.currentParty
+            agreement.payload.distributor === currentParty
         );
         return agreement ? (
           <FaHandshake size="28" />

@@ -12,33 +12,34 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { userContext } from "../../config";
-import { DistributionCommonProps } from "./config";
+import FundManagementContext from "../../store/fund-management-context";
 
 type Props = {
-  common: DistributionCommonProps;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
   currentIsinCode: string;
 };
 
 const AddDistributorForm = (props: Props) => {
+  const fundManagementContext = React.useContext(FundManagementContext);
+  const currentParty = userContext.useParty()
+  const ledger = userContext.useLedger()
+
   const handleClose = () => {
     props.setOpen(false);
   };
 
   const addDistributorHandler = async (distributorToAdd: Party) => {
     // only fundManager will see add distributor button and execute this handler
-    const fundManager = props.common.currentParty;
+    const fundManager = currentParty;
     const fundKey: Fund.Key = {
       _1: { map: emptyMap<string, {}>().set(fundManager, {}) },
       _2: props.currentIsinCode,
     };
 
-    await props.common.ledger.exerciseByKey(
-      Fund.ProposeDistributionAgreement,
-      fundKey,
-      { distributor: distributorToAdd }
-    );
+    await ledger.exerciseByKey(Fund.ProposeDistributionAgreement, fundKey, {
+        distributor: distributorToAdd,
+      });
   };
 
   const handleConfirmation = () => {
@@ -51,7 +52,7 @@ const AddDistributorForm = (props: Props) => {
     const currentDistributor = distributor.payload.distributor;
     return (
       <MenuItem key={currentDistributor} value={currentDistributor}>
-        {props.common.idToDisplayName(currentDistributor)}
+        {fundManagementContext.idToDisplayName(currentDistributor)}
       </MenuItem>
     );
   });

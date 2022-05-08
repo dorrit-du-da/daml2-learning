@@ -10,11 +10,7 @@ import { Button } from "@mui/material";
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
-
-type Props = {
-  common: SubscriptionCommonProps;
-};
+import FundManagementContext from "../../store/fund-management-context";
 
 const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   list.reduce((previous, currentItem) => {
@@ -25,7 +21,11 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   }, {} as Record<K, T[]>);
 
 const pendingStatus: SubscriptionStatus = "Pending";
-const SubscriptionRequestList = (props: Props) => {
+
+const SubscriptionRequestList = () => {
+  const fundManagementContext = React.useContext(FundManagementContext);
+  const ledger = userContext.useLedger();
+
   const subscriptionRequests = userContext
     .useStreamQuery(SubscriptionRequest, () => {
       return { status: pendingStatus };
@@ -40,11 +40,11 @@ const SubscriptionRequestList = (props: Props) => {
     {
       field: "distributor",
       cellRenderer: (param: ICellRendererParams) =>
-        props.common.idToDisplayName(param.value),
+        fundManagementContext.idToDisplayName(param.value),
     },
     {
-      field: "status"
-    }
+      field: "status",
+    },
   ];
 
   const funds = userContext.useStreamQuery(Fund).contracts;
@@ -60,7 +60,7 @@ const SubscriptionRequestList = (props: Props) => {
       );
 
       if (currentFund) {
-        const result = await props.common.ledger.exercise(
+        const result = await ledger.exercise(
           Fund.Calculate,
           currentFund.contractId,
           {
@@ -82,7 +82,7 @@ const SubscriptionRequestList = (props: Props) => {
             colDefs={colDefs}
             rowData={subscriptionRequests}
           ></TableGrid>
-          {props.common.fundAdminRole && (
+          {fundManagementContext.fundAdminRole && (
             <Button variant="contained" onClick={CalculationHandler}>
               Calculate
             </Button>

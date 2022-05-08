@@ -9,13 +9,12 @@ import { Button, CircularProgress } from "@mui/material";
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
+import FundManagementContext from "../../store/fund-management-context";
 
 type Props = {
   selectedDistributor: Party;
   selectedAccount: string;
   amount: number;
-  common: SubscriptionCommonProps;
   setIsinCode: React.Dispatch<React.SetStateAction<string>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isSubscribing: boolean;
@@ -23,6 +22,8 @@ type Props = {
 };
 
 const FundSubscriptionList = (props: Props) => {
+  const fundManagementContext = React.useContext(FundManagementContext);
+  const currentParty = userContext.useParty()
   const services = userContext.useStreamQuery(SubscriptionService).contracts;
   const distributorsAvailable = services.map(
     (service) => service.payload.distributor
@@ -68,10 +69,10 @@ const FundSubscriptionList = (props: Props) => {
 
   return (
     <>
-      {props.common.streamLoaded &&
-        !props.common.fundAdminRole &&
-        !props.common.fundManagerRole &&
-        props.common.currentParty !== props.common.operator && (
+      {fundManagementContext.streamLoaded &&
+        !fundManagementContext.fundAdminRole &&
+        !fundManagementContext.fundManagerRole &&
+        currentParty !== fundManagementContext.operator && (
           <TableGrid
             title={"Funds Available For Subscription"}
             rowData={funds}

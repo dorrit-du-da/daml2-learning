@@ -5,13 +5,10 @@ import { ConfirmedFundResult } from "@daml.js/da-marketplace/lib/Marketplace/Fun
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
+import FundManagementContext from "../../store/fund-management-context";
 
-type Props = {
-  common: SubscriptionCommonProps;
-};
-
-let ConfirmedFundResultList = (props: Props) => {
+let ConfirmedFundResultList = () => {
+  const fundManagementContext = React.useContext(FundManagementContext);
   const colDefs = [
     {
       field: "id",
@@ -22,7 +19,7 @@ let ConfirmedFundResultList = (props: Props) => {
     {
       field: "fundManager",
       cellRenderer: (param: ICellRendererParams) =>
-        props.common.idToDisplayName(param.value),
+        fundManagementContext.idToDisplayName(param.value),
     },
     { field: "newInvestmentTotalAmount" },
     {
@@ -42,7 +39,7 @@ let ConfirmedFundResultList = (props: Props) => {
   return (
     <>
       {((confirmedResults && confirmedResults.length !== 0) ||
-        props.common.fundManagerRole) && (
+        fundManagementContext.fundManagerRole) && (
         <TableGrid
           title="Confirmed Results for Funds"
           rowData={confirmedResults}

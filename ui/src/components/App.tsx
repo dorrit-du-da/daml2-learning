@@ -15,6 +15,7 @@ import DamlHub, {
 import { SnackbarProvider } from "notistack";
 import Credentials from "../Credentials";
 import { authConfig, userContext, publicContext } from "../config";
+import { FundManagementContextProvider } from "../store/fund-management-context";
 
 /**
  * React component for the entry point into the application.
@@ -62,6 +63,7 @@ const App: React.FC = () => {
             party={credentials.party}
             user={credentials.user}
           >
+            <FundManagementContextProvider>
             <SnackbarProvider>
               <MainScreen
                 onLogout={() => {
@@ -73,6 +75,7 @@ const App: React.FC = () => {
                 }}
               />
             </SnackbarProvider>
+            </FundManagementContextProvider>
           </userContext.DamlLedger>
         </ThemeProvider>
       </Wrap>

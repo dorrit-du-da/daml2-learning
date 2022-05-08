@@ -1,40 +1,38 @@
-import React from 'react';
+import React, { useContext } from "react";
+import { ColDef, ICellRendererParams } from "ag-grid-community";
 
-import { ColDef, ICellRendererParams } from 'ag-grid-community';
+import { DistributionAgreementProposal } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
+import { Button } from "@mui/material";
 
-import {
-    DistributionAgreementProposal
-} from '@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model';
-import { Button } from '@mui/material';
+import TableGrid from "../../components/tableGrid/TableGrid";
+import { userContext } from "../../config";
+import FundManagementContext from "../../store/fund-management-context";
 
-import { userContext } from '../../config';
-import TableGrid from '../../components/tableGrid/TableGrid';
-import { DistributionCommonProps } from './config';
-
-type Props = {
-  common: DistributionCommonProps;
-};
-
-const AgreementProposalList = (props: Props) => {
+const AgreementProposalList = () => {
+  const fundManagementContext = useContext(FundManagementContext);
+  const currentParty = userContext.useParty();
+  const ledger = userContext.useLedger();
+  
+  
   const acceptAgreementHandler = async (isinCode: string) => {
     const currentKey = {
-      _1: props.common.fundManager,
-      _2: props.common.currentParty,
+      _1: fundManagementContext.fundManager,
+      _2: currentParty,
       _3: isinCode,
     };
-    await props.common.ledger.exerciseByKey(
-      DistributionAgreementProposal.AcceptProposal,
-      currentKey,
-      []
-    );
+    await ledger.exerciseByKey(
+        DistributionAgreementProposal.AcceptProposal,
+        currentKey,
+        []
+      );
   };
 
   // ColDefs START
 
   const displayNameRenderer = (params: ICellRendererParams) =>
-    props.common.idToDisplayName(params.value);
-  
-    let columnDefs: ColDef[] = [
+    fundManagementContext.idToDisplayName(params.value);
+
+  let columnDefs: ColDef[] = [
     {
       headerName: "title",
       field: "fundId",
@@ -49,14 +47,14 @@ const AgreementProposalList = (props: Props) => {
     },
   ];
 
-  if (props.common.fundManagerRole) {
+  if (fundManagementContext.fundManagerRole) {
     columnDefs.push({
       field: "distributor",
       cellRenderer: displayNameRenderer,
     });
   }
 
-  if (props.common.distributorRole) {
+  if (fundManagementContext.distributorRole) {
     // todo might need to set this as a state
     columnDefs.push({
       headerName: "Accept Agreement",
