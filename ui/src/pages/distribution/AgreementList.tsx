@@ -6,7 +6,7 @@ import { userContext } from "../../config";
 import FundManagementContext from "../../store/fund-management-context";
 
 const AgreementList = () => {
-  const fundManagementContext = React.useContext(FundManagementContext)
+  const fundManagementContext = React.useContext(FundManagementContext);
   const agreements = userContext
     .useStreamQuery(DistributionAgreement)
     .contracts.map((agreement) => agreement.payload);
@@ -33,7 +33,7 @@ const AgreementList = () => {
     <>
       {fundManagementContext.fundManagerRole &&
         agreements &&
-        (agreements.length !== 0) && (
+        agreements.length !== 0 && (
           <TableGrid
             title="Agreements"
             rowData={agreements}

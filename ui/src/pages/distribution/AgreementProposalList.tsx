@@ -55,7 +55,6 @@ const AgreementProposalList = () => {
   }
 
   if (fundManagementContext.distributorRole) {
-    // todo might need to set this as a state
     columnDefs.push({
       headerName: "Accept Agreement",
       field: "isinCode",

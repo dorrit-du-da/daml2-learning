@@ -16,12 +16,11 @@ type Props = {
 };
 
 const FundList: React.FC<Props> = (props: Props) => {
-  const title = "Funds";
   const fundManagementContext = useContext(FundManagementContext);
   const currentParty = userContext.useParty();
 
   let funds = userContext
-    .useStreamQuery(Fund)
+    .useStreamQueries(Fund)
     .contracts.map((createdEvent) => createdEvent.payload);
 
   let fundColDefs: ColDef[] = [
@@ -53,7 +52,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     });
   }
 
-  const agreements = userContext.useStreamQuery(
+  const agreements = userContext.useStreamQueries(
     DistributionAgreement
   ).contracts;
 
@@ -76,7 +75,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     });
   }
 
-  return <TableGrid title={title} rowData={funds} colDefs={fundColDefs} />;
+  return <TableGrid title="Funds" rowData={funds} colDefs={fundColDefs} />;
 };
 
 export default FundList;
