@@ -17,6 +17,9 @@ interface IFundManagementContext {
   distributorRole: DistributorRole | undefined;
   streamLoaded: boolean;
   idToDisplayName: (partyId: string) => string;
+  isLoading: boolean;
+  startLoading: () => void;
+  finishLoading: () => void;
 }
 
 const FundManagementContext = React.createContext<IFundManagementContext>({
@@ -28,6 +31,9 @@ const FundManagementContext = React.createContext<IFundManagementContext>({
   distributorRole: undefined,
   streamLoaded: false,
   idToDisplayName: (partyId: string) => "",
+  isLoading: false,
+  startLoading: () => {},
+  finishLoading: () => {},
 });
 
 interface AuxProps {
@@ -41,6 +47,16 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
       currentParty,
     ])
     .contracts.find(() => true)?.payload;
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
+
+  const finishLoading = () => {
+    setIsLoading(false);
+  };
 
   const operator = currentAlias ? currentAlias.operator : "non-existent";
 
@@ -93,6 +109,9 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
         distributorRole: distributorRole,
         streamLoaded: streamLoaded,
         idToDisplayName: idToDisplayName,
+        isLoading: isLoading,
+        startLoading: startLoading,
+        finishLoading: finishLoading,
       }}
     >
       {props.children}

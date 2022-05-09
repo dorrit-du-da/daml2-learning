@@ -33,9 +33,11 @@ const AddDistributorForm = (props: Props) => {
       _2: props.currentIsinCode,
     };
 
+    fundManagementContext.startLoading();
+
     await ledger.exerciseByKey(Fund.ProposeDistributionAgreement, fundKey, {
       distributor: distributorToAdd,
-    });
+    }).then(() => fundManagementContext.finishLoading());
   };
 
   const handleConfirmation = () => {

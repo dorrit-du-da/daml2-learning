@@ -31,8 +31,6 @@ type Props = {
   amount: number;
   selectedAccount: string;
   currentIsinCode: string;
-  isSubscribing: boolean;
-  setIsSubscribing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SubscriptionForm = (props: Props) => {
@@ -47,8 +45,8 @@ const SubscriptionForm = (props: Props) => {
   };
 
   const handleConfirmation = () => {
-    props.setIsSubscribing(true);
-    addSubscriptionHandler().then(() => props.setIsSubscribing(false));
+    fundManagementContext.startLoading()
+    addSubscriptionHandler().then(() => fundManagementContext.finishLoading());
     props.setSelectedAccount("");
     props.setAmount(0);
     props.setOpen(false);

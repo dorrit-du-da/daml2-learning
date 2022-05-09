@@ -3,7 +3,7 @@ import { ICellRendererParams } from "ag-grid-community";
 
 import { CalculatedFundResult } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
 import { ContractId } from "@daml/types";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
@@ -11,7 +11,7 @@ import FundManagementContext from "../../store/fund-management-context";
 
 let CalculatedFundResultList = () => {
   const fundManagementContext = React.useContext(FundManagementContext);
-  const ledger = userContext.useLedger()
+  const ledger = userContext.useLedger();
   const colDefs = [
     {
       field: "id",
@@ -35,22 +35,26 @@ let CalculatedFundResultList = () => {
   const approveCalculationHandler = async (
     cid: ContractId<CalculatedFundResult>
   ) => {
-    const result = await ledger
-      .exercise(CalculatedFundResult.ApproveCalculation, cid, {});
-    console.log(result);
+    fundManagementContext.startLoading();
+    await ledger
+      .exercise(CalculatedFundResult.ApproveCalculation, cid, {})
+      .then(() => fundManagementContext.finishLoading());
   };
 
   if (fundManagementContext.fundManagerRole) {
     colDefs.push({
       field: "contractId",
-      cellRenderer: (param: ICellRendererParams) => (
-        <Button
-          variant="contained"
-          onClick={() => approveCalculationHandler(param.value)}
-        >
-          Approve
-        </Button>
-      ),
+      cellRenderer: (param: ICellRendererParams) =>
+        fundManagementContext.isLoading ? (
+          <CircularProgress size={20} />
+        ) : (
+          <Button
+            variant="contained"
+            onClick={() => approveCalculationHandler(param.value)}
+          >
+            Approve
+          </Button>
+        ),
     });
   }
 

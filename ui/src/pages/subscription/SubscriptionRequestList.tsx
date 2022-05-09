@@ -6,7 +6,7 @@ import {
   SubscriptionRequest,
   SubscriptionStatus,
 } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Subscription/Service";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
@@ -60,15 +60,12 @@ const SubscriptionRequestList = () => {
       );
 
       if (currentFund) {
-        const result = await ledger.exercise(
-          Fund.Calculate,
-          currentFund.contractId,
-          {
+        fundManagementContext.startLoading();
+        await ledger
+          .exercise(Fund.Calculate, currentFund.contractId, {
             subscriptionRequestCids: cids,
-          }
-        );
-
-        console.log(result);
+          })
+          .then(() => fundManagementContext.finishLoading());
       }
     });
   };
@@ -82,11 +79,14 @@ const SubscriptionRequestList = () => {
             colDefs={colDefs}
             rowData={subscriptionRequests}
           ></TableGrid>
-          {fundManagementContext.fundAdminRole && (
-            <Button variant="contained" onClick={CalculationHandler}>
-              Calculate
-            </Button>
-          )}
+          {fundManagementContext.fundAdminRole &&
+            (fundManagementContext.isLoading ? (
+              <CircularProgress size={20} />
+            ) : (
+              <Button variant="contained" onClick={CalculationHandler}>
+                Calculate
+              </Button>
+            ))}
         </div>
       )}
     </>

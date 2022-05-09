@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import { userContext } from "../../config";
 import TableGrid from "../../components/tableGrid/TableGrid";
@@ -31,7 +31,9 @@ const FundList: React.FC<Props> = (props: Props) => {
   ];
 
   const addDistributorButtonRenderer = (params: ICellRendererParams) => {
-    return (
+    return fundManagementContext.isLoading ? (
+      <CircularProgress size={20} />
+    ) : (
       <Button
         variant="contained"
         onClick={() => {

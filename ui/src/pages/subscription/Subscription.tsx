@@ -7,7 +7,6 @@ import SubscriptionForm from "./SubscriptionForm";
 import SubscriptionRequestList from "./SubscriptionRequestList";
 
 const Subscription = () => {
-  const [isSubscribing, setIsSubscribing] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [isinCode, setIsinCode] = React.useState("");
   const [selectedDistributor, setSelectedDistributor] = React.useState("");
@@ -23,8 +22,6 @@ const Subscription = () => {
         selectedDistributor={selectedDistributor}
         selectedAccount={selectedAccount}
         amount={amount}
-        isSubscribing={isSubscribing}
-        setIsSubscribing={setIsSubscribing}
       />
       <SubscriptionForm
         setOpen={setOpen}
@@ -36,8 +33,6 @@ const Subscription = () => {
         setSelectedDistributor={setSelectedDistributor}
         setSelectedAccount={setSelectedAccount}
         setAmount={setAmount}
-        isSubscribing={isSubscribing}
-        setIsSubscribing={setIsSubscribing}
       />
       <SubscriptionRequestList />
       <CalculatedFundResultList />

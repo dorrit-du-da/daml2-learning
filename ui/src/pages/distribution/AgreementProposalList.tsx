@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import { DistributionAgreementProposal } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import TableGrid from "../../components/tableGrid/TableGrid";
 import { userContext } from "../../config";
@@ -12,19 +12,21 @@ const AgreementProposalList = () => {
   const fundManagementContext = useContext(FundManagementContext);
   const currentParty = userContext.useParty();
   const ledger = userContext.useLedger();
-  
-  
+
   const acceptAgreementHandler = async (isinCode: string) => {
     const currentKey = {
       _1: fundManagementContext.fundManager,
       _2: currentParty,
       _3: isinCode,
     };
-    await ledger.exerciseByKey(
+    fundManagementContext.startLoading();
+    await ledger
+      .exerciseByKey(
         DistributionAgreementProposal.AcceptProposal,
         currentKey,
         []
-      );
+      )
+      .then(() => fundManagementContext.finishLoading());
   };
 
   // ColDefs START
@@ -60,7 +62,9 @@ const AgreementProposalList = () => {
       field: "isinCode",
       cellRenderer: (params: ICellRendererParams) => {
         const isinCode = params.value;
-        return (
+        return fundManagementContext.isLoading ? (
+          <CircularProgress size={20} />
+        ) : (
           <Button
             variant="contained"
             onClick={() => acceptAgreementHandler(isinCode)}

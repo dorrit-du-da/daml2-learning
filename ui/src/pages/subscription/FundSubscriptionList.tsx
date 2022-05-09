@@ -17,8 +17,6 @@ type Props = {
   amount: number;
   setIsinCode: React.Dispatch<React.SetStateAction<string>>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isSubscribing: boolean;
-  setIsSubscribing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FundSubscriptionList = (props: Props) => {
@@ -50,7 +48,7 @@ const FundSubscriptionList = (props: Props) => {
       field: "isinCode",
       headerName: "Subscribe",
       cellRenderer: (param: ICellRendererParams) => {
-        return props.isSubscribing ? (
+        return fundManagementContext.isLoading ? (
           <CircularProgress size={20} />
         ) : (
           <Button
