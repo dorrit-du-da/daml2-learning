@@ -1,9 +1,9 @@
 import React from "react";
 
-import AddDistributorForm from "./AddDistributorForm";
-import AgreementList from "./AgreementList";
-import AgreementProposalList from "./AgreementProposalList";
-import FundList from "./FundList";
+import AddDistributorForm from "./Form/AddDistributorForm";
+import AgreementList from "./List/AgreementList";
+import AgreementProposalList from "./List/AgreementProposalList";
+import FundList from "./List/FundList";
 
 const Distribution: React.FC = () => {
   const [openAddDistributorForm, setOpenAddDistributorForm] =

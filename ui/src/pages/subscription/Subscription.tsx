@@ -1,10 +1,10 @@
 import React from "react";
 
-import CalculatedFundResultList from "./CalculatedFundResult";
-import ConfirmedFundResultList from "./ConfirmedFundResult";
-import FundSubscriptionList from "./FundSubscriptionList";
-import SubscriptionForm from "./SubscriptionForm";
-import SubscriptionRequestList from "./SubscriptionRequestList";
+import SubscriptionForm from "./Form/SubscriptionForm";
+import FundSubscriptionList from "./List/FundSubscriptionList";
+import SubscriptionRequestList from "./List/SubscriptionRequestList";
+import CalculatedFundResultList from "./Results/CalculatedFundResult";
+import ConfirmedFundResultList from "./Results/ConfirmedFundResult";
 
 const Subscription = () => {
   const [open, setOpen] = React.useState(false);

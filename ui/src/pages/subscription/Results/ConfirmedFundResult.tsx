@@ -3,9 +3,9 @@ import React from "react";
 
 import { ConfirmedFundResult } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 let ConfirmedFundResultList = () => {
   const fundManagementContext = React.useContext(FundManagementContext);

@@ -17,8 +17,8 @@ import {
   TextField,
 } from "@mui/material";
 
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 // todo judy refactor this component with AddDistributorForm
 type Props = {

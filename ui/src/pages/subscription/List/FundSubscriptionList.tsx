@@ -7,9 +7,9 @@ import { Service as SubscriptionService } from "@daml.js/da-marketplace/lib/Mark
 import { Party } from "@daml/types";
 import { Button, CircularProgress } from "@mui/material";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
   selectedDistributor: Party;

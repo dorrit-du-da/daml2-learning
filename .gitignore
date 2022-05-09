@@ -8,3 +8,5 @@ node_modules
 
 ui/da-marketplace.js
 ui/package-lock.json
+
+.dlint.yaml

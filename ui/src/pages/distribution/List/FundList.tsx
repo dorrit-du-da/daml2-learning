@@ -4,11 +4,11 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
 import { Button, CircularProgress } from "@mui/material";
 
-import { userContext } from "../../config";
-import TableGrid from "../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import TableGrid from "../../../components/tableGrid/TableGrid";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
-import FundManagementContext from "../../store/fund-management-context";
+import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
   setIsinCode: React.Dispatch<React.SetStateAction<string>>;

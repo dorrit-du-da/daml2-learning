@@ -1,9 +1,9 @@
 import React from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 const AgreementList = () => {
   const fundManagementContext = React.useContext(FundManagementContext);

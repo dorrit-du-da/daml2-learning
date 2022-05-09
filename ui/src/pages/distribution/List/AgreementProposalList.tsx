@@ -4,9 +4,9 @@ import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { DistributionAgreementProposal } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { Button, CircularProgress } from "@mui/material";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 const AgreementProposalList = () => {
   const fundManagementContext = useContext(FundManagementContext);

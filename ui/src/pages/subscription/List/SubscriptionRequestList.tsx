@@ -8,9 +8,9 @@ import {
 } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Subscription/Service";
 import { Button, CircularProgress } from "@mui/material";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   list.reduce((previous, currentItem) => {

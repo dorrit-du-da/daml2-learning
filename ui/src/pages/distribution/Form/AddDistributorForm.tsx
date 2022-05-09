@@ -11,8 +11,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

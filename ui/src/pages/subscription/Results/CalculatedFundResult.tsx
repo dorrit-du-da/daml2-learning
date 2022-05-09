@@ -5,9 +5,9 @@ import { CalculatedFundResult } from "@daml.js/da-marketplace/lib/Marketplace/Fu
 import { ContractId } from "@daml/types";
 import { Button, CircularProgress } from "@mui/material";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import FundManagementContext from "../../store/fund-management-context";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 let CalculatedFundResultList = () => {
   const fundManagementContext = React.useContext(FundManagementContext);
