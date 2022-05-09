@@ -38,6 +38,7 @@ let CalculatedFundResultList = () => {
     fundManagementContext.startLoading();
     await ledger
       .exercise(CalculatedFundResult.ApproveCalculation, cid, {})
+      .catch(error => fundManagementContext.logError(error))
       .then(() => fundManagementContext.finishLoading());
   };
 

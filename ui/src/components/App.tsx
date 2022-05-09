@@ -63,19 +63,19 @@ const App: React.FC = () => {
             party={credentials.party}
             user={credentials.user}
           >
-            <FundManagementContextProvider>
             <SnackbarProvider>
-              <MainScreen
-                onLogout={() => {
-                  if (authConfig.provider === "daml-hub") {
-                    damlHubLogout();
-                  }
-                  setCredentials(undefined);
-                  localStorage.removeItem("credentials");
-                }}
-              />
+              <FundManagementContextProvider>
+                <MainScreen
+                  onLogout={() => {
+                    if (authConfig.provider === "daml-hub") {
+                      damlHubLogout();
+                    }
+                    setCredentials(undefined);
+                    localStorage.removeItem("credentials");
+                  }}
+                />
+              </FundManagementContextProvider>
             </SnackbarProvider>
-            </FundManagementContextProvider>
           </userContext.DamlLedger>
         </ThemeProvider>
       </Wrap>

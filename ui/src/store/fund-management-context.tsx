@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 import { Role as DistributorRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor";
 import { Role as FundAdminRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/FundAdmin/Role";
@@ -20,6 +21,7 @@ interface IFundManagementContext {
   isLoading: boolean;
   startLoading: () => void;
   finishLoading: () => void;
+  logError: (error: any) => void;
 }
 
 const FundManagementContext = React.createContext<IFundManagementContext>({
@@ -34,6 +36,7 @@ const FundManagementContext = React.createContext<IFundManagementContext>({
   isLoading: false,
   startLoading: () => {},
   finishLoading: () => {},
+  logError: () => {},
 });
 
 interface AuxProps {
@@ -98,6 +101,17 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
     return displayName;
   };
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const logError = (error: any) => {
+    const key = enqueueSnackbar(JSON.stringify(error), {
+      variant: "error",
+      onClick: () => {
+        closeSnackbar(key);
+      },
+    });
+  };
+
   return (
     <FundManagementContext.Provider
       value={{
@@ -112,6 +126,7 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
         isLoading: isLoading,
         startLoading: startLoading,
         finishLoading: finishLoading,
+        logError: logError,
       }}
     >
       {props.children}

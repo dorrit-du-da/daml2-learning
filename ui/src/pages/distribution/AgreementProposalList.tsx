@@ -26,6 +26,7 @@ const AgreementProposalList = () => {
         currentKey,
         []
       )
+      .catch((error) => fundManagementContext.logError(error))
       .then(() => fundManagementContext.finishLoading());
   };
 
