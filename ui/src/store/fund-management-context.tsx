@@ -3,7 +3,9 @@ import { useSnackbar } from "notistack";
 
 import { Role as DistributorRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor";
 import { Role as FundAdminRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/FundAdmin/Role";
+import { Role as InvestmentManagerRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Investment/Role";
 import { Role as FundManagerRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Role";
+import { Role as TransferAgentRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/TransferAgent/Role";
 import { Alias } from "@daml.js/da-marketplace/lib/Tests/FundManagement/Setup";
 import { Party } from "@daml/types";
 
@@ -14,6 +16,8 @@ interface IFundManagementContext {
   fundManager: Party;
   currentAlias: Alias | undefined;
   fundManagerRole: FundManagerRole | undefined;
+  investmentManagerRole: InvestmentManagerRole | undefined;
+  transferAgentRole: TransferAgentRole | undefined;
   fundAdminRole: FundAdminRole | undefined;
   distributorRole: DistributorRole | undefined;
   streamLoaded: boolean;
@@ -29,6 +33,8 @@ const FundManagementContext = React.createContext<IFundManagementContext>({
   fundManager: "non-existent fundManager",
   currentAlias: undefined,
   fundManagerRole: undefined,
+  investmentManagerRole: undefined,
+  transferAgentRole: undefined,
   fundAdminRole: undefined,
   distributorRole: undefined,
   streamLoaded: false,
@@ -65,6 +71,20 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
 
   const fundManagerRole = userContext
     .useStreamQueries(FundManagerRole, () => [{ fundManager: currentParty }], [
+      currentParty,
+    ])
+    .contracts.find(() => true)?.payload;
+
+  const investmentManagerRole = userContext
+    .useStreamQueries(
+      InvestmentManagerRole,
+      () => [{ provider: currentParty }],
+      [currentParty]
+    )
+    .contracts.find(() => true)?.payload;
+
+  const transferAgentRole = userContext
+    .useStreamQueries(TransferAgentRole, () => [{ provider: currentParty }], [
       currentParty,
     ])
     .contracts.find(() => true)?.payload;
@@ -119,6 +139,8 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
         fundManager: fundManager,
         currentAlias: currentAlias,
         fundManagerRole: fundManagerRole,
+        investmentManagerRole: investmentManagerRole,
+        transferAgentRole: transferAgentRole,
         fundAdminRole: fundAdminRole,
         distributorRole: distributorRole,
         streamLoaded: streamLoaded,
