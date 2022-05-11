@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import AddDistributorForm from "./Form/AddDistributorForm";
 import AgreementList from "./List/AgreementList";
@@ -6,9 +6,8 @@ import AgreementProposalList from "./List/AgreementProposalList";
 import FundList from "./List/FundList";
 
 const Distribution: React.FC = () => {
-  const [openAddDistributorForm, setOpenAddDistributorForm] =
-    React.useState(false);
-  const [isinCode, setIsinCode] = React.useState("");
+  const [openAddDistributorForm, setOpenAddDistributorForm] = useState(false);
+  const [isinCode, setIsinCode] = useState("");
 
   return (
     <div>

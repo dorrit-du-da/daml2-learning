@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useSnackbar } from "notistack";
 
 import { Role as DistributorRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor";
@@ -20,7 +20,7 @@ interface IFundManagementContext {
   transferAgentRole: TransferAgentRole | undefined;
   fundAdminRole: FundAdminRole | undefined;
   distributorRole: DistributorRole | undefined;
-  streamLoaded: boolean;
+  streamLoading: boolean;
   idToDisplayName: (partyId: string) => string;
   isLoading: boolean;
   startLoading: () => void;
@@ -37,7 +37,7 @@ const FundManagementContext = React.createContext<IFundManagementContext>({
   transferAgentRole: undefined,
   fundAdminRole: undefined,
   distributorRole: undefined,
-  streamLoaded: false,
+  streamLoading: false,
   idToDisplayName: (partyId: string) => "",
   isLoading: false,
   startLoading: () => {},
@@ -57,7 +57,7 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
     ])
     .contracts.find(() => true)?.payload;
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const startLoading = () => {
     setIsLoading(true);
@@ -69,42 +69,58 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
 
   const operator = currentAlias ? currentAlias.operator : "non-existent";
 
-  const fundManagerRole = userContext
-    .useStreamQueries(FundManagerRole, () => [{ fundManager: currentParty }], [
-      currentParty,
-    ])
-    .contracts.find(() => true)?.payload;
+  const fundManagerRoleQueryResult = userContext.useQuery(
+    FundManagerRole,
+    () => {
+      return { fundManager: currentParty };
+    }
+  );
+
+  const fundManagerRole = fundManagerRoleQueryResult.contracts.find(
+    () => true
+  )?.payload;
+
+  const streamLoading = fundManagerRoleQueryResult.loading;
 
   const investmentManagerRole = userContext
-    .useStreamQueries(
+    .useQuery(
       InvestmentManagerRole,
-      () => [{ provider: currentParty }],
+      () => {
+        return { provider: currentParty };
+      },
       [currentParty]
     )
     .contracts.find(() => true)?.payload;
 
   const transferAgentRole = userContext
-    .useStreamQueries(TransferAgentRole, () => [{ provider: currentParty }], [
-      currentParty,
-    ])
+    .useQuery(
+      TransferAgentRole,
+      () => {
+        return { provider: currentParty };
+      },
+      [currentParty]
+    )
     .contracts.find(() => true)?.payload;
 
   const fundAdminRole = userContext
-    .useStreamQueries(FundAdminRole, () => [{ provider: currentParty }], [
-      currentParty,
-    ])
+    .useQuery(
+      FundAdminRole,
+      () => {
+        return { provider: currentParty };
+      },
+      [currentParty]
+    )
     .contracts.find(() => true)?.payload;
 
   const distributorRole = userContext
-    .useStreamQueries(DistributorRole, () => [{ distributor: currentParty }], [
-      currentParty,
-    ])
+    .useQuery(
+      DistributorRole,
+      () => {
+        return { distributor: currentParty };
+      },
+      [currentParty]
+    )
     .contracts.find(() => true)?.payload;
-
-  const [streamLoaded, setStreamLoaded] = React.useState(false);
-  useEffect(() => {
-    setTimeout(() => setStreamLoaded(true), 600); // use to debounce, todo judy is there better approach
-  }, []);
 
   const aliases = userContext.useStreamQueries(Alias).contracts;
   const fundManagerAlias = aliases.filter(
@@ -143,7 +159,7 @@ export const FundManagementContextProvider: React.FC<AuxProps> = (props) => {
         transferAgentRole: transferAgentRole,
         fundAdminRole: fundAdminRole,
         distributorRole: distributorRole,
-        streamLoaded: streamLoaded,
+        streamLoading: streamLoading,
         idToDisplayName: idToDisplayName,
         isLoading: isLoading,
         startLoading: startLoading,

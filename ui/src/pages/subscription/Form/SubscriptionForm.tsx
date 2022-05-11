@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { AssetDeposit } from "@daml.js/da-marketplace/lib/DA/Finance/Asset";
 import { AccountInfo } from "@daml.js/da-marketplace/lib/Marketplace/Custody/Model";
@@ -22,19 +22,19 @@ import FundManagementContext from "../../../store/fund-management-context";
 
 // todo judy refactor this component with AddDistributorForm
 type Props = {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open: boolean) => void;
   open: boolean;
-  setSelectedDistributor: React.Dispatch<React.SetStateAction<Party>>;
+  setSelectedDistributor: (selectedDistributor: Party) => void
   selectedDistributor: Party;
-  setSelectedAccount: React.Dispatch<React.SetStateAction<string>>;
-  setAmount: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedAccount: (selectedAccountName: string) => void;
+  setAmount: (amount: number) => void;
   amount: number;
   selectedAccount: string;
   currentIsinCode: string;
 };
 
 const SubscriptionForm = (props: Props) => {
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
   const ledger = userContext.useLedger();
   const currentParty = userContext.useParty();
 

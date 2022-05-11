@@ -1,5 +1,5 @@
 import { ColDef, ICellRendererParams } from "ag-grid-community";
-import React from "react";
+import React, { useContext } from "react";
 
 import { ProductList } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
@@ -15,13 +15,13 @@ type Props = {
   selectedDistributor: Party;
   selectedAccount: string;
   amount: number;
-  setIsinCode: React.Dispatch<React.SetStateAction<string>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsinCode: (isinCode: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const FundSubscriptionList = (props: Props) => {
-  const fundManagementContext = React.useContext(FundManagementContext);
-  const currentParty = userContext.useParty()
+  const fundManagementContext = useContext(FundManagementContext);
+  const currentParty = userContext.useParty();
   const services = userContext.useStreamQuery(SubscriptionService).contracts;
   const distributorsAvailable = services.map(
     (service) => service.payload.distributor
@@ -40,13 +40,14 @@ const FundSubscriptionList = (props: Props) => {
     .map((fund) => fund.payload);
 
   let fundColDefs: ColDef[] = [
-    { field: "title" },
-    { field: "isinCode" },
+    { field: "title", filter: true },
+    { field: "isinCode", filter: true },
     { field: "investmentStrategy" },
     { field: "investmentObjective" },
     {
       field: "isinCode",
       headerName: "Subscribe",
+      sortable: false,
       cellRenderer: (param: ICellRendererParams) => {
         return fundManagementContext.isLoading ? (
           <CircularProgress size={20} />
@@ -67,8 +68,7 @@ const FundSubscriptionList = (props: Props) => {
 
   return (
     <>
-      {fundManagementContext.streamLoaded &&
-        !fundManagementContext.fundAdminRole &&
+      {!fundManagementContext.fundAdminRole &&
         !fundManagementContext.fundManagerRole &&
         currentParty !== fundManagementContext.operator && (
           <TableGrid

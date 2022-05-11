@@ -1,5 +1,5 @@
 import { ICellRendererParams } from "ag-grid-community";
-import React from "react";
+import React, { useContext } from "react";
 
 import { ConfirmedFundResult } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
 
@@ -8,7 +8,7 @@ import { userContext } from "../../../config";
 import FundManagementContext from "../../../store/fund-management-context";
 
 let ConfirmedFundResultList = () => {
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
   const colDefs = [
     {
       field: "id",

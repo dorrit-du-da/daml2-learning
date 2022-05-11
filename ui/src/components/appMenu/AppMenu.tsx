@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
 
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
@@ -13,7 +13,7 @@ import List from "@mui/material/List";
 import { createStyles, makeStyles } from "@mui/styles";
 
 import { userContext } from "../../config";
-import logoSVG from "../../image/header_logo.jpeg";
+import logoSVG from "../../image/digital-asset-logo-dark.svg";
 import FundManagementContext from "../../store/fund-management-context";
 import AppMenuItem from "./AppMenuItem";
 import AppMenuItemComponent from "./AppMenuItemComponent";
@@ -43,10 +43,9 @@ type Props = {
 const AppMenu: React.FC<Props> = ({ onLogout }) => {
   const classes = useStyles();
   const user = userContext.useUser();
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
 
-  const appMenuItemList = React.useMemo(() => {
-    // todo judy what if update comes at different times?
+  const appMenuItemList = useMemo(() => {
     const appMenuItems = [
       {
         name: "Home",
@@ -91,7 +90,7 @@ const AppMenu: React.FC<Props> = ({ onLogout }) => {
       <img className={classes.img} src={logoSVG} alt="logo" />
       <List component="nav" className={classes.appMenu} disablePadding>
         <Typography align={"center"} gutterBottom={true} variant="h6">
-          User: {user.userId}
+          Login As: {user.userId}
         </Typography>
         {appMenuItemList.map((item) => (
           <AppMenuItem {...item} key={item.name} />

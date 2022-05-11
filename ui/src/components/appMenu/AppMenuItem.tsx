@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createStyles, makeStyles } from '@mui/styles';
 
@@ -36,7 +36,7 @@ const AppMenuItem: React.FC<AppMenuItemProps> = props => {
   const { name, link, Icon, items = [] } = props
   const classes = useStyles()
   const isExpandable = items && items.length > 0
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   function handleClick() {
     setOpen(!open)

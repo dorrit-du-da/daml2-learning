@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import SubscriptionForm from "./Form/SubscriptionForm";
 import FundSubscriptionList from "./List/FundSubscriptionList";
@@ -7,11 +7,11 @@ import CalculatedFundResultList from "./Results/CalculatedFundResult";
 import ConfirmedFundResultList from "./Results/ConfirmedFundResult";
 
 const Subscription = () => {
-  const [open, setOpen] = React.useState(false);
-  const [isinCode, setIsinCode] = React.useState("");
-  const [selectedDistributor, setSelectedDistributor] = React.useState("");
-  const [selectedAccount, setSelectedAccount] = React.useState("");
-  const [amount, setAmount] = React.useState(0);
+  const [open, setOpen] = useState(false);
+  const [isinCode, setIsinCode] = useState("");
+  const [selectedDistributor, setSelectedDistributor] = useState("");
+  const [selectedAccount, setSelectedAccount] = useState("");
+  const [amount, setAmount] = useState(0);
 
   return (
     // todo judy maybe use context here

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from "react";
+import React, { useState } from "react";
 import LoginScreen from "./login/LoginScreen";
 import MainScreen from "./MainScreen";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -22,7 +22,7 @@ import { FundManagementContextProvider } from "../store/fund-management-context"
  */
 // APP_BEGIN
 const App: React.FC = () => {
-  const [credentials, setCredentials] = React.useState<Credentials | undefined>(
+  const [credentials, setCredentials] = useState<Credentials | undefined>(
     () => {
       const savedCredentials = localStorage.getItem("credentials");
       return savedCredentials ? JSON.parse(savedCredentials) : undefined;

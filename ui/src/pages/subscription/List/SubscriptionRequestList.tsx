@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ICellRendererParams } from "ag-grid-community";
 
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
@@ -23,7 +23,7 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
 const pendingStatus: SubscriptionStatus = "Pending";
 
 const SubscriptionRequestList = () => {
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
   const ledger = userContext.useLedger();
 
   const subscriptionRequests = userContext
@@ -35,15 +35,17 @@ const SubscriptionRequestList = () => {
     });
 
   let colDefs = [
-    { field: "isinCode" },
-    { field: "amount" },
+    { field: "isinCode", filter: true },
+    { field: "amount"},
     {
       field: "distributor",
+      filter: true,
       cellRenderer: (param: ICellRendererParams) =>
         fundManagementContext.idToDisplayName(param.value),
     },
     {
       field: "status",
+      filter: true,
     },
   ];
 

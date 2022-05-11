@@ -59,12 +59,14 @@ const ProgressStatus: React.FC<Props> = ({ signedParties, activeStep }) => {
             sm={12}
           >
             <FormControlLabel
+              style={{ pointerEvents: "none" }}
               control={
                 <Checkbox checked={signedParties.fundAdmin} sx={buttonStyled} />
               }
               label="Fund Admin"
             />
             <FormControlLabel
+              style={{ pointerEvents: "none" }}
               control={
                 <Checkbox
                   checked={signedParties.investmentManager}
@@ -74,6 +76,7 @@ const ProgressStatus: React.FC<Props> = ({ signedParties, activeStep }) => {
               label="Investment Manager"
             />
             <FormControlLabel
+              style={{ pointerEvents: "none" }}
               control={
                 <Checkbox
                   checked={signedParties.transferAgent}

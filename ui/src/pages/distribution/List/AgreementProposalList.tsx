@@ -38,12 +38,13 @@ const AgreementProposalList = () => {
   let columnDefs: ColDef[] = [
     {
       headerName: "title",
+      filter: true,
       field: "fundId",
       cellRenderer: (params: ICellRendererParams) => {
         return params.value.label;
       },
     },
-    { field: "isinCode" },
+    { field: "isinCode", filter: true },
     {
       field: "fundManager",
       cellRenderer: displayNameRenderer,
@@ -53,6 +54,7 @@ const AgreementProposalList = () => {
   if (fundManagementContext.fundManagerRole) {
     columnDefs.push({
       field: "distributor",
+      filter: true,
       cellRenderer: displayNameRenderer,
     });
   }
@@ -61,6 +63,7 @@ const AgreementProposalList = () => {
     columnDefs.push({
       headerName: "Accept Agreement",
       field: "isinCode",
+      sortable: false,
       cellRenderer: (params: ICellRendererParams) => {
         const isinCode = params.value;
         return fundManagementContext.isLoading ? (

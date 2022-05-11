@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 
 import { Role as DistributorRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor";
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
@@ -15,13 +15,13 @@ import { userContext } from "../../../config";
 import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open:boolean) => void;
   open: boolean;
   currentIsinCode: string;
 };
 
 const AddDistributorForm = (props: Props) => {
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
   const currentParty = userContext.useParty();
   const ledger = userContext.useLedger();
 
@@ -59,7 +59,7 @@ const AddDistributorForm = (props: Props) => {
     );
   });
 
-  const [selectedDistributor, setSelectedDistributor] = React.useState("");
+  const [selectedDistributor, setSelectedDistributor] = useState("");
 
   return (
     <div>

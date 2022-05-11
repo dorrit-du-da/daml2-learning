@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
 
 import { DamlHubLogin as DamlHubLoginBtn } from "@daml/hub-react";
@@ -50,7 +50,7 @@ const LoginScreen: React.FC<Props> = ({ onLogin }) => {
   );
 
   const InsecureLogin: React.FC<{ auth: Insecure }> = ({ auth }) => {
-    const [username, setUsername] = React.useState("");
+    const [username, setUsername] = useState("");
 
     const handleLogin = async (event: React.FormEvent) => {
       event.preventDefault();

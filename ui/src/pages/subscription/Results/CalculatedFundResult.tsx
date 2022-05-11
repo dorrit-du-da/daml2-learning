@@ -1,5 +1,5 @@
-import React from "react";
-import { ICellRendererParams } from "ag-grid-community";
+import React, { useContext } from "react";
+import { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import { CalculatedFundResult } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
 import { ContractId } from "@daml/types";
@@ -10,9 +10,9 @@ import { userContext } from "../../../config";
 import FundManagementContext from "../../../store/fund-management-context";
 
 let CalculatedFundResultList = () => {
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
   const ledger = userContext.useLedger();
-  const colDefs = [
+  const colDefs: ColDef[] = [
     {
       field: "id",
       headerName: "Title",
@@ -38,12 +38,14 @@ let CalculatedFundResultList = () => {
     fundManagementContext.startLoading();
     await ledger
       .exercise(CalculatedFundResult.ApproveCalculation, cid, {})
-      .catch(error => fundManagementContext.logError(error))
+      .catch((error) => fundManagementContext.logError(error))
       .then(() => fundManagementContext.finishLoading());
   };
 
   if (fundManagementContext.fundManagerRole) {
     colDefs.push({
+      headerName: "Approve",
+      sortable: false,
       field: "contractId",
       cellRenderer: (param: ICellRendererParams) =>
         fundManagementContext.isLoading ? (

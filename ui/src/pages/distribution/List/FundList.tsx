@@ -11,8 +11,8 @@ import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
 import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
-  setIsinCode: React.Dispatch<React.SetStateAction<string>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsinCode: (isinCode: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const FundList: React.FC<Props> = (props: Props) => {
@@ -20,14 +20,16 @@ const FundList: React.FC<Props> = (props: Props) => {
   const currentParty = userContext.useParty();
 
   let funds = userContext
-    .useStreamQueries(Fund)
+    .useStreamQueries(Fund, () => {
+      return [{ isinCode: "" }, {}];
+    })
     .contracts.map((createdEvent) => createdEvent.payload);
 
   let fundColDefs: ColDef[] = [
     { field: "title", filter: true },
     { field: "investmentStrategy" },
     { field: "investmentObjective" },
-    { field: "isinCode" },
+    { field: "isinCode", filter: true },
   ];
 
   const addDistributorButtonRenderer = (params: ICellRendererParams) => {
@@ -49,14 +51,15 @@ const FundList: React.FC<Props> = (props: Props) => {
   if (fundManagementContext.fundManagerRole) {
     fundColDefs.push({
       field: "isinCode",
+      sortable: false,
       headerName: "Add Distributor",
       cellRenderer: addDistributorButtonRenderer,
     });
   }
 
-  const agreements = userContext.useStreamQueries(
-    DistributionAgreement
-  ).contracts;
+  const agreements = userContext.useStreamQueries(DistributionAgreement, () => [
+    { distributor: currentParty },
+  ]).contracts;
 
   if (fundManagementContext.distributorRole) {
     fundColDefs.push({
@@ -64,9 +67,7 @@ const FundList: React.FC<Props> = (props: Props) => {
       headerName: "Agreement Made",
       cellRenderer: (param: ICellRendererParams) => {
         const agreement = agreements.find(
-          (agreement) =>
-            agreement.payload.isinCode === param.value &&
-            agreement.payload.distributor === currentParty
+          (agreement) => agreement.payload.isinCode === param.value
         );
         return agreement ? (
           <FaHandshake size="28" />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import TableGrid from "../../../components/tableGrid/TableGrid";
@@ -6,7 +6,7 @@ import { userContext } from "../../../config";
 import FundManagementContext from "../../../store/fund-management-context";
 
 const AgreementList = () => {
-  const fundManagementContext = React.useContext(FundManagementContext);
+  const fundManagementContext = useContext(FundManagementContext);
   const agreements = userContext
     .useStreamQuery(DistributionAgreement)
     .contracts.map((agreement) => agreement.payload);
@@ -17,14 +17,16 @@ const AgreementList = () => {
   let columnDefs: ColDef[] = [
     {
       headerName: "title",
+      filter: true,
       field: "fundId",
       cellRenderer: (params: ICellRendererParams) => {
         return params.value.label;
       },
     },
-    { field: "isinCode" },
+    { field: "isinCode", filter: true },
     {
       field: "distributor",
+      filter: true,
       cellRenderer: displayNameRenderer,
     },
   ];
