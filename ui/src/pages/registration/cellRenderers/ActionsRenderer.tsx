@@ -35,7 +35,7 @@ function ActionsRenderer(params: ICellRendererParams) {
     if (fundManagerRole && damlSetValues(params.data.signed).length === 3)
       return [{ value: "finalize", label: "FINALIZE" }];
     else if (damlSetValues(params.data.signed).includes(username)) return [];
-    else if (fundAdminRole || investmentManagerRole) return [{ value: "approve", label: "APPORVE" }];
+    else if (fundAdminRole || investmentManagerRole) return [{ value: "approve", label: "APPROVE" }];
     else if (transferAgentRole)
       return [{ value: "assignAccount", label: "ASSIGN ACCOUNT" }];
     return [];

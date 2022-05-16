@@ -36,6 +36,14 @@ const MainScreen: React.FC<Props> = ({ onLogout }) => {
             classes={{
               paper: classes.drawerPaper,
             }}
+            sx={{
+              '& .MuiDrawer-root': {
+                  position: 'relative'
+              },
+              '& .MuiPaper-root': {
+                  position: 'relative'
+              },
+            }}
           >
             <AppMenu onLogout={onLogout} />
           </Drawer>
@@ -77,7 +85,6 @@ const useStyles = makeStyles((theme: any) => ({
     background: "black",
   },
   drawerPaper: {
-    position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
     paddingTop: theme.spacing(4),
