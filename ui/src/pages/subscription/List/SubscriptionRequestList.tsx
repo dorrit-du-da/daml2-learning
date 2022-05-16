@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ICellRendererParams } from "ag-grid-community";
 
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
@@ -6,15 +6,11 @@ import {
   SubscriptionRequest,
   SubscriptionStatus,
 } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Subscription/Service";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
-
-type Props = {
-  common: SubscriptionCommonProps;
-};
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   list.reduce((previous, currentItem) => {
@@ -25,7 +21,11 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
   }, {} as Record<K, T[]>);
 
 const pendingStatus: SubscriptionStatus = "Pending";
-const SubscriptionRequestList = (props: Props) => {
+
+const SubscriptionRequestList = () => {
+  const fundManagementContext = useContext(FundManagementContext);
+  const ledger = userContext.useLedger();
+
   const subscriptionRequests = userContext
     .useStreamQuery(SubscriptionRequest, () => {
       return { status: pendingStatus };
@@ -35,16 +35,18 @@ const SubscriptionRequestList = (props: Props) => {
     });
 
   let colDefs = [
-    { field: "isinCode" },
-    { field: "amount" },
+    { field: "isinCode", filter: true },
+    { field: "amount"},
     {
       field: "distributor",
+      filter: true,
       cellRenderer: (param: ICellRendererParams) =>
-        props.common.idToDisplayName(param.value),
+        fundManagementContext.idToDisplayName(param.value),
     },
     {
-      field: "status"
-    }
+      field: "status",
+      filter: true,
+    },
   ];
 
   const funds = userContext.useStreamQuery(Fund).contracts;
@@ -60,15 +62,12 @@ const SubscriptionRequestList = (props: Props) => {
       );
 
       if (currentFund) {
-        const result = await props.common.ledger.exercise(
-          Fund.Calculate,
-          currentFund.contractId,
-          {
+        fundManagementContext.startLoading();
+        await ledger
+          .exercise(Fund.Calculate, currentFund.contractId, {
             subscriptionRequestCids: cids,
-          }
-        );
-
-        console.log(result);
+          })
+          .then(() => fundManagementContext.finishLoading());
       }
     });
   };
@@ -82,11 +81,14 @@ const SubscriptionRequestList = (props: Props) => {
             colDefs={colDefs}
             rowData={subscriptionRequests}
           ></TableGrid>
-          {props.common.fundAdminRole && (
-            <Button variant="contained" onClick={CalculationHandler}>
-              Calculate
-            </Button>
-          )}
+          {fundManagementContext.fundAdminRole &&
+            (fundManagementContext.isLoading ? (
+              <CircularProgress size={20} />
+            ) : (
+              <Button variant="contained" onClick={CalculationHandler}>
+                Calculate
+              </Button>
+            ))}
         </div>
       )}
     </>

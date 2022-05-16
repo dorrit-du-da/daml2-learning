@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -14,7 +13,6 @@ import { createStyles, makeStyles } from "@mui/styles";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { SignedParties } from "./config";
-import { userContext } from "../../config";
 
 interface Props {
   signedParties: SignedParties;
@@ -61,12 +59,14 @@ const ProgressStatus: React.FC<Props> = ({ signedParties, activeStep }) => {
             sm={12}
           >
             <FormControlLabel
+              style={{ pointerEvents: "none" }}
               control={
                 <Checkbox checked={signedParties.fundAdmin} sx={buttonStyled} />
               }
               label="Fund Admin"
             />
             <FormControlLabel
+              style={{ pointerEvents: "none" }}
               control={
                 <Checkbox
                   checked={signedParties.investmentManager}
@@ -76,6 +76,7 @@ const ProgressStatus: React.FC<Props> = ({ signedParties, activeStep }) => {
               label="Investment Manager"
             />
             <FormControlLabel
+              style={{ pointerEvents: "none" }}
               control={
                 <Checkbox
                   checked={signedParties.transferAgent}

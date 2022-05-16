@@ -7,12 +7,10 @@ import { createStyles, makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { createTheme } from "@mui/material/styles";
 
 import { FundRegistrationRequest } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Registration/Model";
 
 import { DataGrid } from "../../components/datagrid/Grid";
-import { DataGrid2 } from "../../components/datagrid/GridTest";
 import ProgressStatus from "./ProgressStatus";
 import { userContext, damlSetValues } from "../../config";
 import {
@@ -37,7 +35,7 @@ const RegistrationView: React.FC = () => {
   ).contracts;
 
   const rowData: any[] = [];
-  allFundRegistrationRequests.map((i) => {
+  allFundRegistrationRequests.forEach((i) => {
     let obj = { contractId: i.contractId, ...i.payload };
     rowData.push(obj);
   });
@@ -110,8 +108,6 @@ const RegistrationView: React.FC = () => {
 };
 
 export default RegistrationView;
-
-const darkTheme = createTheme({ palette: { mode: "dark" } });
 
 const useStyles = makeStyles(() =>
   createStyles({

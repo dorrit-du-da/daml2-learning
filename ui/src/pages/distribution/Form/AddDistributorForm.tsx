@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 
 import { Role as DistributorRole } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Distributor";
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
 import { emptyMap, Party } from "@daml/types";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,38 +11,41 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import { userContext } from "../../config";
-import { DistributionCommonProps } from "./config";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
-  common: DistributionCommonProps;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open:boolean) => void;
   open: boolean;
   currentIsinCode: string;
 };
 
 const AddDistributorForm = (props: Props) => {
-  const handleClose = () => {
-    props.setOpen(false);
-  };
+  const fundManagementContext = useContext(FundManagementContext);
+  const currentParty = userContext.useParty();
+  const ledger = userContext.useLedger();
 
   const addDistributorHandler = async (distributorToAdd: Party) => {
     // only fundManager will see add distributor button and execute this handler
-    const fundManager = props.common.currentParty;
+    const fundManager = currentParty;
     const fundKey: Fund.Key = {
       _1: { map: emptyMap<string, {}>().set(fundManager, {}) },
       _2: props.currentIsinCode,
     };
 
-    await props.common.ledger.exerciseByKey(
-      Fund.ProposeDistributionAgreement,
-      fundKey,
-      { distributor: distributorToAdd }
-    );
+    fundManagementContext.startLoading();
+
+    await ledger.exerciseByKey(Fund.ProposeDistributionAgreement, fundKey, {
+      distributor: distributorToAdd,
+    }).then(() => fundManagementContext.finishLoading());
   };
 
   const handleConfirmation = () => {
     addDistributorHandler(selectedDistributor);
+    props.setOpen(false);
+  };
+
+  const handleClose = () => {
     props.setOpen(false);
   };
 
@@ -51,17 +54,12 @@ const AddDistributorForm = (props: Props) => {
     const currentDistributor = distributor.payload.distributor;
     return (
       <MenuItem key={currentDistributor} value={currentDistributor}>
-        {props.common.idToDisplayName(currentDistributor)}
+        {fundManagementContext.idToDisplayName(currentDistributor)}
       </MenuItem>
     );
   });
 
-  const [selectedDistributor, setSelectedDistributor] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    event.preventDefault();
-    setSelectedDistributor(event.target.value as string);
-  };
+  const [selectedDistributor, setSelectedDistributor] = useState("");
 
   return (
     <div>
@@ -76,7 +74,9 @@ const AddDistributorForm = (props: Props) => {
             id="selectedDistributor-select"
             value={selectedDistributor}
             label="selectedDistributor"
-            onChange={handleChange}
+            onChange={(event) => {
+              setSelectedDistributor(event.target.value);
+            }}
             displayEmpty
           >
             {/* todo judy modify default value properly */}

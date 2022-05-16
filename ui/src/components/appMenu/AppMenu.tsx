@@ -1,70 +1,40 @@
-import React from "react";
-import { createStyles, makeStyles } from '@mui/styles';
+import React, { useContext, useMemo } from "react";
 
-import  List  from "@mui/material/List";
-import { ListItemText, Typography } from "@mui/material";
-import ListItemIcon from '@mui/material//ListItemIcon'
-import Divider from "@mui/material/Divider";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
-import HomeIcon from '@mui/icons-material/Home';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import ShareIcon from '@mui/icons-material/Share';
-import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import ShareIcon from "@mui/icons-material/Share";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import { ListItemText, Typography } from "@mui/material";
+import ListItemIcon from "@mui/material//ListItemIcon";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
+import { createStyles, makeStyles } from "@mui/styles";
 
-import { userContext } from '../../config';
-import AppMenuItem from './AppMenuItem';
-import AppMenuItemComponent from './AppMenuItemComponent';
-import logoSVG from  "../../image/header_logo.jpeg";
+import { userContext } from "../../config";
+import logoSVG from "../../image/digital-asset-logo-dark.svg";
+import FundManagementContext from "../../store/fund-management-context";
+import AppMenuItem from "./AppMenuItem";
+import AppMenuItemComponent from "./AppMenuItemComponent";
 
-const appMenuItems = [
-  {
-    name: "Home",
-    link: "/",
-    Icon: HomeIcon,
-  },
-  {
-    name: "Account",
-    link: "/account",
-    Icon: AccountBalanceWalletIcon,
-  },
-  {
-    name: "Registration",
-    link: "/registration/view",
-    Icon: AppRegistrationIcon,
-  },
-  {
-    name: "Distribution",
-    link: "/distribution",
-    Icon: ShareIcon,
-  },
-  {
-    name: "Subscription",
-    link: "/subscription",
-    Icon: SubscriptionsIcon,
-  },
-  {
-    name: "Placehoder",
-    Icon: RocketLaunchIcon,
-    items: [
-      {
-        name: "Level 2",
-      },
-      {
-        name: "Level 2",
-        items: [
-          {
-            name: "Level 3",
-          },
-          {
-            name: "Level 3",
-          },
-        ],
-      },
-    ],
-  },
-];
+const registration = {
+  name: "Registration",
+  link: "/registration/view",
+  Icon: AppRegistrationIcon,
+};
+
+const distribution = {
+  name: "Distribution",
+  link: "/distribution",
+  Icon: ShareIcon,
+};
+
+const subscription = {
+  name: "Subscription",
+  link: "/subscription",
+  Icon: SubscriptionsIcon,
+};
 
 type Props = {
   onLogout: () => void;
@@ -73,26 +43,71 @@ type Props = {
 const AppMenu: React.FC<Props> = ({ onLogout }) => {
   const classes = useStyles();
   const user = userContext.useUser();
+  const fundManagementContext = useContext(FundManagementContext);
+
+  const appMenuItemList = useMemo(() => {
+    const appMenuItems = [
+      {
+        name: "Home",
+        link: "/",
+        Icon: HomeIcon,
+      },
+      {
+        name: "Account",
+        link: "/account",
+        Icon: AccountBalanceWalletIcon,
+      },
+    ];
+    if (
+      fundManagementContext.fundManagerRole ||
+      fundManagementContext.fundAdminRole ||
+      fundManagementContext.investmentManagerRole ||
+      fundManagementContext.transferAgentRole
+    ) {
+      appMenuItems.push(registration);
+    }
+
+    if (
+      fundManagementContext.fundManagerRole ||
+      fundManagementContext.distributorRole
+    ) {
+      appMenuItems.push(distribution);
+    }
+
+    if (
+      !fundManagementContext.investmentManagerRole &&
+      !fundManagementContext.transferAgentRole &&
+      !fundManagementContext.distributorRole
+    ) {
+      appMenuItems.push(subscription);
+    }
+
+    return appMenuItems;
+  }, [fundManagementContext]);
 
   return (
     <>
-    <img className={classes.img}  src={logoSVG} alt="logo" />
-    <List component="nav" className={classes.appMenu} disablePadding>
-  
-      <Typography align={'center'} gutterBottom={true} variant ='h6'>User: {user.userId}.</Typography>
-      {appMenuItems.map((item, index) => (
-        <AppMenuItem {...item} key={index} />
-      ))}
-      <Divider variant="middle" className={classes.divider} />
+      <img className={classes.img} src={logoSVG} alt="logo" />
+      <List component="nav" className={classes.appMenu} disablePadding>
+        <Typography align={"center"} gutterBottom={true} variant="h6">
+          Login As: {user.userId}
+        </Typography>
+        {appMenuItemList.map((item) => (
+          <AppMenuItem {...item} key={item.name} />
+        ))}
+        <Divider variant="middle" className={classes.divider} />
 
-      <AppMenuItemComponent className={classes.menuItem} link={"/#"} onClick={onLogout}>
-        <ListItemIcon >
-          <LogoutIcon />
-        </ListItemIcon>
-        <ListItemText primary="Logout" />
-      </AppMenuItemComponent>
-
-    </List>
+        <AppMenuItemComponent
+          className={classes.menuItem}
+          link={"/#"}
+          onClick={onLogout}
+        >
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </AppMenuItemComponent>
+      </List>
     </>
   );
 };
@@ -108,14 +123,14 @@ const useStyles = makeStyles(() =>
       width: drawerWidth,
     },
     menuItem: {
-      '& .MuiListItemIcon-root': {
+      "& .MuiListItemIcon-root": {
         color: "#fbcd14",
       },
-      '&.active': {
-        background: 'rgba(0, 0, 0, 0.08)',
+      "&.active": {
+        background: "rgba(0, 0, 0, 0.08)",
         color: "#fbcd14",
-        '& .MuiListItemIcon-root': {
-          color: '#fff',
+        "& .MuiListItemIcon-root": {
+          color: "#fff",
         },
       },
     },
@@ -125,8 +140,8 @@ const useStyles = makeStyles(() =>
     img: {
       maxWidth: "100%",
       height: "auto",
-      padding: "10px"
-    }
+      padding: "10px",
+    },
   })
 );
 

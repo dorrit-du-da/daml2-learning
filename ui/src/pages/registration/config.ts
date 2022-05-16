@@ -71,21 +71,6 @@ export const rowClassRules = {
   // row style function
   'sick-days-warning': function (params:ICellRendererParams) {
     var dealingFrequency = params.data.dealingFrequency;
-    return dealingFrequency =="DAILY"
+    return dealingFrequency === "DAILY"
   },
 }
-
-
-
-
-// export function changeRowColor(params: ICellRendererParams) {
-//   'sick-days-warning': function (params) {
-//     var numSickDays = params.data.sickDays;
-//     return numSickDays > 5 && numSickDays <= 7;
-//   },
-//   // row style expression
-//   'sick-days-breach': 'data.sickDays >= 8',
-// },
-// }
-  
-// }

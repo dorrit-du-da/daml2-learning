@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React, { useContext } from "react";
 
-import React from "react";
 import clsx from "clsx";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
@@ -15,6 +15,7 @@ import Home from "../pages/home/Home";
 import RegistrationForm from "../pages/registration/RegistrationForm";
 import RegistrationView from "../pages/registration/RegistrationView";
 import Subscription from "../pages/subscription/Subscription";
+import FundManagementContext from "../store/fund-management-context";
 import AppMenu from "./appMenu/AppMenu";
 
 type Props = {
@@ -25,7 +26,7 @@ type Props = {
  */
 const MainScreen: React.FC<Props> = ({ onLogout }) => {
   const classes = useStyles();
-
+  const fundManagementContext = useContext(FundManagementContext);
   return (
     <>
       <BrowserRouter>
@@ -35,28 +36,40 @@ const MainScreen: React.FC<Props> = ({ onLogout }) => {
             classes={{
               paper: classes.drawerPaper,
             }}
+            sx={{
+              '& .MuiDrawer-root': {
+                  position: 'relative'
+              },
+              '& .MuiPaper-root': {
+                  position: 'relative'
+              },
+            }}
           >
             <AppMenu onLogout={onLogout} />
           </Drawer>
           <main className={classes.content}>
-            <Container maxWidth="lg" className={classes.container}>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/account" component={Account} />
-                <Route
-                  exact
-                  path="/registration/view"
-                  component={RegistrationView}
-                />
-                <Route
-                  exact
-                  path="/registration/new"
-                  component={RegistrationForm}
-                />
-                <Route path="/distribution" component={Distribution} />
-                <Route path="/subscription" component={Subscription} />
-              </Switch>
-            </Container>
+            {!fundManagementContext.streamLoading && (
+              <>
+                <Container maxWidth="lg" className={classes.container}>
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/account" component={Account} />
+                    <Route
+                      exact
+                      path="/registration/view"
+                      component={RegistrationView}
+                    />
+                    <Route
+                      exact
+                      path="/registration/new"
+                      component={RegistrationForm}
+                    />
+                    <Route path="/distribution" component={Distribution} />
+                    <Route path="/subscription" component={Subscription} />
+                  </Switch>
+                </Container>
+              </>
+            )}
           </main>
         </div>
       </BrowserRouter>
@@ -72,7 +85,6 @@ const useStyles = makeStyles((theme: any) => ({
     background: "black",
   },
   drawerPaper: {
-    position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
     paddingTop: theme.spacing(4),

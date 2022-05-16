@@ -1,37 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
-import { userContext } from "../../config";
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { DistributionCommonProps } from "./config";
+import { userContext } from "../../../config";
+import TableGrid from "../../../components/tableGrid/TableGrid";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
+import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
-  common: DistributionCommonProps;
-  setIsinCode: React.Dispatch<React.SetStateAction<string>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsinCode: (isinCode: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const FundList: React.FC<Props> = (props: Props) => {
-  const title = "Funds";
+  const fundManagementContext = useContext(FundManagementContext);
+  const currentParty = userContext.useParty();
 
   let funds = userContext
-    .useStreamQuery(Fund)
+    .useStreamQueries(Fund, () => {
+      return [{ isinCode: "" }, {}];
+    })
     .contracts.map((createdEvent) => createdEvent.payload);
 
   let fundColDefs: ColDef[] = [
     { field: "title", filter: true },
     { field: "investmentStrategy" },
     { field: "investmentObjective" },
-    {field: "isinCode"}
+    { field: "isinCode", filter: true },
   ];
 
   const addDistributorButtonRenderer = (params: ICellRendererParams) => {
-    return (
+    return fundManagementContext.isLoading ? (
+      <CircularProgress size={20} />
+    ) : (
       <Button
         variant="contained"
         onClick={() => {
@@ -44,27 +48,26 @@ const FundList: React.FC<Props> = (props: Props) => {
     );
   };
 
-  if (props.common.fundManagerRole) {
+  if (fundManagementContext.fundManagerRole) {
     fundColDefs.push({
       field: "isinCode",
+      sortable: false,
       headerName: "Add Distributor",
       cellRenderer: addDistributorButtonRenderer,
     });
   }
 
-  const agreements = userContext.useStreamQuery(
-    DistributionAgreement
-  ).contracts;
+  const agreements = userContext.useStreamQueries(DistributionAgreement, () => [
+    { distributor: currentParty },
+  ]).contracts;
 
-  if (props.common.distributorRole) {
+  if (fundManagementContext.distributorRole) {
     fundColDefs.push({
       field: "isinCode",
       headerName: "Agreement Made",
       cellRenderer: (param: ICellRendererParams) => {
         const agreement = agreements.find(
-          (agreement) =>
-            agreement.payload.isinCode === param.value &&
-            agreement.payload.distributor === props.common.currentParty
+          (agreement) => agreement.payload.isinCode === param.value
         );
         return agreement ? (
           <FaHandshake size="28" />
@@ -75,7 +78,7 @@ const FundList: React.FC<Props> = (props: Props) => {
     });
   }
 
-  return <TableGrid title={title} rowData={funds} colDefs={fundColDefs} />;
+  return <TableGrid title="Funds" rowData={funds} colDefs={fundColDefs} />;
 };
 
 export default FundList;

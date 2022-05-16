@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { styled, useTheme } from "@mui/material";
-import { ColDef, GridApi, RowClickedEvent, GetContextMenuItemsParams, MenuItemDef} from "ag-grid-community";
+import { styled } from "@mui/material";
+import { ColDef, GridApi, RowClickedEvent} from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 
 
@@ -35,7 +35,6 @@ export const DataGrid2 = <T,>({
   const [gridApi, setGridApi] = useState<GridApi>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gridColumnApi, setGridColumnApi] = useState(null);
-  const { palette } = useTheme();
   const onGridReady = (params: any) => {
     setGridApi(params.api);
     setGridColumnApi(params.columnApi);

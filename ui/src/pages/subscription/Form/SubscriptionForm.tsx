@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { AssetDeposit } from "@daml.js/da-marketplace/lib/DA/Finance/Asset";
 import { AccountInfo } from "@daml.js/da-marketplace/lib/Marketplace/Custody/Model";
@@ -17,26 +17,27 @@ import {
   TextField,
 } from "@mui/material";
 
-import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 // todo judy refactor this component with AddDistributorForm
 type Props = {
-  common: SubscriptionCommonProps;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (open: boolean) => void;
   open: boolean;
-  setSelectedDistributor: React.Dispatch<React.SetStateAction<Party>>;
+  setSelectedDistributor: (selectedDistributor: Party) => void
   selectedDistributor: Party;
-  setSelectedAccount: React.Dispatch<React.SetStateAction<string>>;
-  setAmount: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedAccount: (selectedAccountName: string) => void;
+  setAmount: (amount: number) => void;
   amount: number;
   selectedAccount: string;
   currentIsinCode: string;
-  isSubscribing: boolean;
-  setIsSubscribing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SubscriptionForm = (props: Props) => {
+  const fundManagementContext = useContext(FundManagementContext);
+  const ledger = userContext.useLedger();
+  const currentParty = userContext.useParty();
+
   const handleClose = () => {
     props.setAmount(0);
     props.setSelectedAccount("");
@@ -44,15 +45,15 @@ const SubscriptionForm = (props: Props) => {
   };
 
   const handleConfirmation = () => {
-    props.setIsSubscribing(true);
-    addSubscriptionHandler().then(() => props.setIsSubscribing(false));
+    fundManagementContext.startLoading()
+    addSubscriptionHandler().then(() => fundManagementContext.finishLoading());
     props.setSelectedAccount("");
     props.setAmount(0);
     props.setOpen(false);
   };
 
   const addSubscriptionHandler = async () => {
-    const deposits = await props.common.ledger.query(AssetDeposit);
+    const deposits = await ledger.query(AssetDeposit);
     const investorAccount = accounts.find(
       (account) => account.id.label === props.selectedAccount
     );
@@ -64,14 +65,14 @@ const SubscriptionForm = (props: Props) => {
     if (cashDepositCid && investorAccount) {
       const serviceKey: SubscriptionService.Key = {
         _1: props.selectedDistributor,
-        _2: props.common.currentParty,
+        _2: currentParty,
       };
 
       let uuid =
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
 
-      const [result] = await props.common.ledger.exerciseByKey(
+      const [result] = await ledger.exerciseByKey(
         SubscriptionService.Subscribe,
         serviceKey,
         {
@@ -102,7 +103,7 @@ const SubscriptionForm = (props: Props) => {
   const distributorMenuItems = distributorsAvailable.map((distributor) => {
     return (
       <MenuItem key={distributor} value={distributor}>
-        {props.common.idToDisplayName(distributor)}
+        {fundManagementContext.idToDisplayName(distributor)}
       </MenuItem>
     );
   });

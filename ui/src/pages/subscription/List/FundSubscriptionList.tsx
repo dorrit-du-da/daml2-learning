@@ -1,5 +1,5 @@
 import { ColDef, ICellRendererParams } from "ag-grid-community";
-import React from "react";
+import React, { useContext } from "react";
 
 import { ProductList } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
 import { Fund } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Model";
@@ -7,22 +7,21 @@ import { Service as SubscriptionService } from "@daml.js/da-marketplace/lib/Mark
 import { Party } from "@daml/types";
 import { Button, CircularProgress } from "@mui/material";
 
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import { SubscriptionCommonProps } from "./config";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
 type Props = {
   selectedDistributor: Party;
   selectedAccount: string;
   amount: number;
-  common: SubscriptionCommonProps;
-  setIsinCode: React.Dispatch<React.SetStateAction<string>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isSubscribing: boolean;
-  setIsSubscribing: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsinCode: (isinCode: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const FundSubscriptionList = (props: Props) => {
+  const fundManagementContext = useContext(FundManagementContext);
+  const currentParty = userContext.useParty();
   const services = userContext.useStreamQuery(SubscriptionService).contracts;
   const distributorsAvailable = services.map(
     (service) => service.payload.distributor
@@ -41,15 +40,16 @@ const FundSubscriptionList = (props: Props) => {
     .map((fund) => fund.payload);
 
   let fundColDefs: ColDef[] = [
-    { field: "title" },
-    { field: "isinCode" },
+    { field: "title", filter: true },
+    { field: "isinCode", filter: true },
     { field: "investmentStrategy" },
     { field: "investmentObjective" },
     {
       field: "isinCode",
       headerName: "Subscribe",
+      sortable: false,
       cellRenderer: (param: ICellRendererParams) => {
-        return props.isSubscribing ? (
+        return fundManagementContext.isLoading ? (
           <CircularProgress size={20} />
         ) : (
           <Button
@@ -68,10 +68,9 @@ const FundSubscriptionList = (props: Props) => {
 
   return (
     <>
-      {props.common.streamLoaded &&
-        !props.common.fundAdminRole &&
-        !props.common.fundManagerRole &&
-        props.common.currentParty !== props.common.operator && (
+      {!fundManagementContext.fundAdminRole &&
+        !fundManagementContext.fundManagerRole &&
+        currentParty !== fundManagementContext.operator && (
           <TableGrid
             title={"Funds Available For Subscription"}
             rowData={funds}

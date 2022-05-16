@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { createStyles, makeStyles } from '@mui/styles';
 
@@ -15,7 +15,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AppMenuItemComponent from './AppMenuItemComponent'
 
 // React runtime PropTypes
-export const AppMenuItemPropTypes = {
+export const AppMenuItemProp = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string,
   Icon: PropTypes.elementType,
@@ -24,7 +24,7 @@ export const AppMenuItemPropTypes = {
 
 // TypeScript compile-time props type, infered from propTypes
 // https://dev.to/busypeoples/notes-on-typescript-inferring-react-proptypes-1g88
-type AppMenuItemPropTypes = PropTypes.InferProps<typeof AppMenuItemPropTypes>
+type AppMenuItemPropTypes = PropTypes.InferProps<typeof AppMenuItemProp>
 type AppMenuItemPropsWithoutItems = Omit<AppMenuItemPropTypes, 'items'>
 
 // Improve child items declaration
@@ -36,7 +36,7 @@ const AppMenuItem: React.FC<AppMenuItemProps> = props => {
   const { name, link, Icon, items = [] } = props
   const classes = useStyles()
   const isExpandable = items && items.length > 0
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   function handleClick() {
     setOpen(!open)

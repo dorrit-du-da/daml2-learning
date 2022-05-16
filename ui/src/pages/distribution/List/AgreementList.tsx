@@ -1,42 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ColDef, ICellRendererParams } from "ag-grid-community";
 import { DistributionAgreement } from "@daml.js/da-marketplace/lib/Marketplace/FundManagement/Distribution/Model";
-import TableGrid from "../../components/tableGrid/TableGrid";
-import { userContext } from "../../config";
-import { DistributionCommonProps } from "./config";
+import TableGrid from "../../../components/tableGrid/TableGrid";
+import { userContext } from "../../../config";
+import FundManagementContext from "../../../store/fund-management-context";
 
-type Props = {
-  common: DistributionCommonProps;
-};
-
-const AgreementList = (props: Props) => {
+const AgreementList = () => {
+  const fundManagementContext = useContext(FundManagementContext);
   const agreements = userContext
     .useStreamQuery(DistributionAgreement)
     .contracts.map((agreement) => agreement.payload);
 
   const displayNameRenderer = (params: ICellRendererParams) =>
-    props.common.idToDisplayName(params.value);
+    fundManagementContext.idToDisplayName(params.value);
 
   let columnDefs: ColDef[] = [
     {
       headerName: "title",
+      filter: true,
       field: "fundId",
       cellRenderer: (params: ICellRendererParams) => {
         return params.value.label;
       },
     },
-    { field: "isinCode" },
+    { field: "isinCode", filter: true },
     {
       field: "distributor",
+      filter: true,
       cellRenderer: displayNameRenderer,
     },
   ];
 
   return (
     <>
-      {props.common.fundManagerRole &&
+      {fundManagementContext.fundManagerRole &&
         agreements &&
-        (agreements.length !== 0) && (
+        agreements.length !== 0 && (
           <TableGrid
             title="Agreements"
             rowData={agreements}
